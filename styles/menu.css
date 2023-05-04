@@ -16,6 +16,7 @@
 {
     width: 30vw;
     height: 60vh;
+    font-size: 4em;
 }
 
 .sectionMenu
@@ -26,10 +27,10 @@
    height: 100%;
 }
 
-.mainMenu h1{
+.mainMenu h1, .mainNiveles h1{
 
   position: relative;
-  /* top: -0.5em;   */
+   top: -0.5em;   
   text-align: center;
   font-size: 4em;
 

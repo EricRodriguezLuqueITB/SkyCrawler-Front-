@@ -4,7 +4,7 @@ class Jugador {
     NivelMaximo;
     Tiempo;
     #Posicion;
-    #Ciudad;
+    Ciudad;
     
     // Métodos
     moverJugador(coord /* int[2] */) {
@@ -20,9 +20,9 @@ class Jugador {
         return this.#Posicion;
     }
 
-    get Ciudad(){
-        return this.#Ciudad;
-    }
+    // get Ciudad(){
+    //     return this.#Ciudad;
+    // }
 
     // Constructores
     constructor(Nombre, NivelMaximo, Ciudad) {
@@ -74,12 +74,15 @@ class Personaje {
     }
 }
 
-class UIManager {
-    
-    #Main = document.getElementsByTagName("main")[0];
+class UIManager 
+{   
+    constructor(numLvl){
+        this.NumNiveles = numLvl;
+    }
 
     printarBarraControl()
     {
+        let main = document.getElementsByTagName("main")[0];
         let divBarraControl = document.createElement("div");
         divBarraControl.className = "barraControl";
 
@@ -96,32 +99,36 @@ class UIManager {
         divBarraControl.appendChild(buttonLogout);
         
         // Condicional creacion flecha
-        if(this.#Main.className != "mainMenu") {
+        if(main.className != "mainMenu") {
             let buttonBack =document.createElement("button");
             let imgBack = document.createElement("img");
             imgBack.setAttribute("src","https://static.vecteezy.com/system/resources/previews/000/365/868/original/left-vector-icon.jpg");
             imgBack.setAttribute("alt","Logout");
             buttonBack.appendChild(imgBack);
-            buttonBack.addEventListener("click",function()
-            {
-                this.#Main.innerHTML = "";
-                switch(this.#Main.className)
-                {
-                    case "mainRanking":
-                        this.printarMenu()
-                        break;
-                }
-            })
+            buttonBack.addEventListener("click",printarMenu)
+            // {
+            //     // switch(document.getElementsByTagName("Main")[0].className)
+            //     // {
+            //     //     case "mainRanking":
+            //     //         this.printarMenu();
+            //     //         break;
+            //     //     case "mainNiveles":
+            //     //         this.printarMenu();
+            //     //         break;
+            //     // }
+            // })
 
             divBarraControl.appendChild(buttonBack); 
         }
 
-        this.#Main.appendChild(divBarraControl);
+        main.appendChild(divBarraControl);
     }
 
     printarMenu()
     {
-        this.#Main.className = "mainMenu";
+        let main = document.getElementsByTagName("main")[0];
+        main.innerHTML = "";
+        main.className = "mainMenu";
         this.printarBarraControl();
         let section = document.createElement("section");
         section.className = "sectionMenu";
@@ -134,30 +141,86 @@ class UIManager {
         divOptions.className = "divOptions";
 
         let buttonRanking = document.createElement("button");
-        buttonRanking.addEventListener("click",this.printarRanking);
+        buttonRanking.addEventListener("click",printarRanking);
         buttonRanking.textContent = "Ranking";
         buttonRanking.className = "botonesMenu";
 
         let buttonNiveles = document.createElement("button");
-        buttonNiveles.addEventListener("click",this.printarNiveles);
+        buttonNiveles.addEventListener("click",printarNiveles);
         buttonNiveles.textContent = "Niveles";
         buttonNiveles.className = "botonesMenu";
 
         divOptions.appendChild(buttonNiveles);
         divOptions.appendChild(buttonRanking);
         section.appendChild(divOptions);
-        this.#Main.appendChild(section);
+        main.appendChild(section);
     }
     // Métodos
-    printarNiveles(numLevel /* int */, nivelMaximo) 
+    printarNiveles() 
     {
-        let divLvl = document.createElement("div");
+        let main = document.getElementsByTagName("main")[0];
+        main.className = "mainNiveles"
+        main.innerHTML= "";
+        this.printarBarraControl();
+        let section = document.createElement("section");
+        section.className = "sectionMenu";
+
+        let nivelesH1 = document.createElement("h1");
+        nivelesH1.textContent = "NIVELES";
+        section.appendChild(nivelesH1);
+
+        let divNiveles = document.createElement("div");
+        divNiveles.className = "divNiveles";
+
+        for(let i=0; i < this.NumNiveles;i++)
+        {
+            let buttonImg = document.createElement("button");
+            buttonImg.setAttribute("id","nivel"+ i);
+            buttonImg.addEventListener("click", printarNivel);
+
+            if(jugador.NivelMaximo <= i)
+            {
+                let img = document.createElement("img");
+                img.className = "candado";
+                img.setAttribute("src","https://cdn-icons-png.flaticon.com/512/345/345535.png?w=360")
+                img.setAttribute("alt","candado");
+                buttonImg.appendChild(img);
+            }
+            else
+            {
+                buttonImg.textContent = i;
+            }
+            divNiveles.appendChild(buttonImg);
+        }
+
+        section.appendChild(divNiveles);
+        main.appendChild(section);
+
         // Genera los botones de cada nivel para le menú,
         // los niveles por encima del nivelCompletado estarán bloqueados.
     }
+
+    printarNivel(Nivel)
+    {
+        let main = document.getElementsByTagName("main")[0];
+        main.innerHTML= "";
+        console.log(main);
+        main.className = "mainNivel"
+        this.printarBarraControl();
+
+        let section = document.createElement("section");
+        section.className = "sectionMenu";
+
+        let nivel = document.createElement("h1");
+        nivel.textContent = "NIVEL" + Nivel;
+        section.appendChild(nivel);
+        main.appendChild(section);
+    }
+
     printarMapa(Nivel /* Nivel */) {
         // Mostrará por pantalla el escenario especificado en el Mapa del
         // nivel pasado por parametro.
+        let main = document.getElementsByTagName("main")[0];
 
         let tablaNivel = document.createElement("table");
         tablaNivel.id = "tablaNivel";
@@ -172,9 +235,11 @@ class UIManager {
             });
             tablaNivel.appendChild(tr);
         });
-        this.#Main.appendChild(tablaNivel);
+        main.appendChild(tablaNivel);
     }
     printarRanking(Nivel /* Nivel */) {
+
+        console.log("ranking");
         // Muestra por pantalla el ranking filtrado por nivel seleccionado.
     }
     GenerarJugador(Jugador /* Jugador */) {
@@ -194,7 +259,7 @@ class UIManager {
 class DataManager {
     // No tiene atributos
 
-    static getNumLevels() {
+    getNumLevels() {
         return 4;
     }
     // Métodos

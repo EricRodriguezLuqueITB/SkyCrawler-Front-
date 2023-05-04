@@ -1,0 +1,17 @@
+.divNiveles button
+{
+    width: 10vw;
+    height: 10vw;
+}
+
+.divNiveles{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;        
+    position: relative;
+    top: -6em;
+}
+
+.divNiveles img{
+    width: 7em;
+}

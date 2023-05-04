@@ -1,0 +1,57 @@
+.mainLogin
+{   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.divLogin{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 40vh;
+    padding: 1em;
+    border: 1px solid black;
+}
+
+.mainLogin form
+{
+    height: 70%;
+    display: flex;
+    flex-direction: column ;
+    justify-content: space-between;
+}
+
+.mainLogin label{
+
+    font-size: 1.5em;
+    border-bottom: 1px black solid;
+
+}
+
+.mainLogin input{
+    height: 2em;
+}
+
+.mainLogin h1{
+    text-decoration: underline;
+    font-size: 4em;
+}
+
+.divButtons
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5em;
+}
+
+.mainLogin img
+{
+    width: 70%;
+    position: relative;
+    top: -5em;
+}
+
+

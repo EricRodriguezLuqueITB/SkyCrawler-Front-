@@ -1,5 +1,6 @@
 const cerebro = new DataManager();
-const UI = new UIManager();
+const UI = new UIManager(cerebro.getNumLevels());
+let jugador = new Jugador("Carlos",2,"Barcelona");
 
 document.getElementById("loginButton").addEventListener("click",comprobarPeticion)
 
@@ -36,3 +37,24 @@ function comprobarPeticion(event)
     //   })
     //   .catch(error => console.error(error));
 }
+
+function printarNiveles()
+{
+    UI.printarNiveles(jugador);
+}
+
+function printarMenu()
+{
+    UI.printarMenu();
+}
+
+function printarNivel()
+{
+    UI.printarNivel();
+}
+
+function printarRanking(){
+    UI.printarRanking();
+}
+
+

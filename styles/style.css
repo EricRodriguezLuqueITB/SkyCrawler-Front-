@@ -3,8 +3,10 @@
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
+
 }
 main{
+  background-color: blue;
     position: absolute;
     top: 0;
     bottom: 0;
