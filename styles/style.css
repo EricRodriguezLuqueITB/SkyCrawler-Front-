@@ -1,0 +1,21 @@
+*{
+    border: 1px solid black;
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+main{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+
+    /* todo lo de arriba es un truqui para que quede 100% centrado en la pantalla,
+      verticalmente y horizontalmente. Es muy útil para modals y heros */
+    width: 95vw;
+    height: 95vh;
+    display: flex;
+    flex-direction: column;
+}

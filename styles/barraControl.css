@@ -1,0 +1,10 @@
+.barraControl img
+{
+    display: flex;
+    width: 3em;
+}
+
+.barraControl button
+{
+   margin-right: 2em;
+}

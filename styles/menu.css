@@ -1,0 +1,36 @@
+.mainMenu
+{
+    display: flex;
+    padding: 2em;
+    
+}
+
+.divOptions
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.botonesMenu
+{
+    width: 30vw;
+    height: 60vh;
+}
+
+.sectionMenu
+{
+   display: flex;
+   flex-direction: column;
+   justify-content: space-around;
+   height: 100%;
+}
+
+.mainMenu h1{
+
+  position: relative;
+  /* top: -0.5em;   */
+  text-align: center;
+  font-size: 4em;
+
+}
