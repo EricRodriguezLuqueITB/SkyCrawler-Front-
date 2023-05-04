@@ -78,7 +78,7 @@ class UIManager {
     
     #Main = document.getElementsByTagName("main")[0];
 
-    printarBarraControl(flecha)
+    printarBarraControl()
     {
         let divBarraControl = document.createElement("div");
         divBarraControl.className = "barraControl";
@@ -96,13 +96,23 @@ class UIManager {
         divBarraControl.appendChild(buttonLogout);
         
         // Condicional creacion flecha
-        if(flecha == true) {
+        if(this.#Main.className != "mainMenu") {
             let buttonBack =document.createElement("button");
             let imgBack = document.createElement("img");
             imgBack.setAttribute("src","https://static.vecteezy.com/system/resources/previews/000/365/868/original/left-vector-icon.jpg");
             imgBack.setAttribute("alt","Logout");
             buttonBack.appendChild(imgBack);
-            
+            buttonBack.addEventListener("click",function()
+            {
+                this.#Main.innerHTML = "";
+                switch(this.#Main.className)
+                {
+                    case "mainRanking":
+                        this.printarMenu()
+                        break;
+                }
+            })
+
             divBarraControl.appendChild(buttonBack); 
         }
 
@@ -111,8 +121,8 @@ class UIManager {
 
     printarMenu()
     {
-        this.printarBarraControl(false);
-        this.#Main.className = "mainMenu"
+        this.#Main.className = "mainMenu";
+        this.printarBarraControl();
         let section = document.createElement("section");
         section.className = "sectionMenu";
 
