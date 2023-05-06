@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="clases.js"></script>
+    <script src="dataManager.js"></script>
+    <script src="UIManager.js"></script>
     <script defer src="main.js"></script>
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/menu.css">
@@ -17,10 +19,9 @@
 
 </head>
 
-
 <body>
     <main class="mainLogin">
-        <img src="https://lh3.googleusercontent.com/lp8QbvTbYUfNVNTru_ctShufl6gB25mrfDWIlWLbQfEQ8qkjnp83gA6KCte367M1tnkwli074VE3r8xRP-SQbH2bk1MW9unKTISJpludYk2MOwfQtYMjXP4QRJL3BaAki4kuF2lPrwauO61Djtt1_JBxAYjp5kd90Y-HRdF9pqoRi7VQ8hkMVYxoF40FxxsC4T_MN_DaO32ci00MtW6Gzds9t7FYQZN1Ia6ZRAeUSQr-I-NaZLHY0S6_lTxdrKmIlAhPE4wI4RY7RzMscfNxM2MszNxIZijM6zNKT2XcR0RVXjho9PnZxsK3dlztZ6laOJfdc3wLPrja7FH2vwn62K5rPuK6zJakp74TQ2EZuJgUgtpJ2MZWwAZ_to0JPHH7pl1A0Gj_xxlAUPJ6qSORb4SaIr6UA4XzyHqCRU5mREfhU6YF0jvGDAnWKQ7x2RwcAdwT02PKN5a38yW0GHyftsBm-sq5nRZvMsZtc0FVtF9YwvvkAJWHptYVeKpxQOfxWRr4P552FuhmgEPk2xh9M3tWt_9bZeOasQm3LwLT7lwmStgKNFn_owrmIASGdI7D7ORYfmhY6AU3nvtKA9pbOMApVch07h8s0AlF60u_zisCEpVn6w6ssZKk53bIxDtVDDOj_9UxvLlUgQmGv-MYGI9YpiM66Ge2S95TUZ64rkIDHQiT2iVhqgMnDChfe6Olf_6NqMyQBwLqf7SEQ_NaZQwU-A35XcR3vmMp7lVa6-NL6_5BrCvgRamKi_2POoqtb3kGV6D-TJjMtlu2zpdowV2Fe5YW9xSctf8rxBNtAsDwkjrX_GuPMzj3H6l2f9J_g_eP2cP4LgaVzM_FkoOV1SrnhcWn8eoGWKEon6JiT8r7odNnbWdQ6E1r5Mh1D_QX-OCcDEmku16vPFOzZjLHbQhLfMC-xLkDQcSR21wXiZ6zDx57UFEDqIV_TDHF9rX5ptgxOJi09P3OUPUw-gY85b5pB54z1fZwkeUjHFb-u1dkOJOG5Nbx95oFRQ=w1412-h236-s-no?authuser=0" alt="">
+        <!-- <img src="https://lh3.googleusercontent.com/lp8QbvTbYUfNVNTru_ctShufl6gB25mrfDWIlWLbQfEQ8qkjnp83gA6KCte367M1tnkwli074VE3r8xRP-SQbH2bk1MW9unKTISJpludYk2MOwfQtYMjXP4QRJL3BaAki4kuF2lPrwauO61Djtt1_JBxAYjp5kd90Y-HRdF9pqoRi7VQ8hkMVYxoF40FxxsC4T_MN_DaO32ci00MtW6Gzds9t7FYQZN1Ia6ZRAeUSQr-I-NaZLHY0S6_lTxdrKmIlAhPE4wI4RY7RzMscfNxM2MszNxIZijM6zNKT2XcR0RVXjho9PnZxsK3dlztZ6laOJfdc3wLPrja7FH2vwn62K5rPuK6zJakp74TQ2EZuJgUgtpJ2MZWwAZ_to0JPHH7pl1A0Gj_xxlAUPJ6qSORb4SaIr6UA4XzyHqCRU5mREfhU6YF0jvGDAnWKQ7x2RwcAdwT02PKN5a38yW0GHyftsBm-sq5nRZvMsZtc0FVtF9YwvvkAJWHptYVeKpxQOfxWRr4P552FuhmgEPk2xh9M3tWt_9bZeOasQm3LwLT7lwmStgKNFn_owrmIASGdI7D7ORYfmhY6AU3nvtKA9pbOMApVch07h8s0AlF60u_zisCEpVn6w6ssZKk53bIxDtVDDOj_9UxvLlUgQmGv-MYGI9YpiM66Ge2S95TUZ64rkIDHQiT2iVhqgMnDChfe6Olf_6NqMyQBwLqf7SEQ_NaZQwU-A35XcR3vmMp7lVa6-NL6_5BrCvgRamKi_2POoqtb3kGV6D-TJjMtlu2zpdowV2Fe5YW9xSctf8rxBNtAsDwkjrX_GuPMzj3H6l2f9J_g_eP2cP4LgaVzM_FkoOV1SrnhcWn8eoGWKEon6JiT8r7odNnbWdQ6E1r5Mh1D_QX-OCcDEmku16vPFOzZjLHbQhLfMC-xLkDQcSR21wXiZ6zDx57UFEDqIV_TDHF9rX5ptgxOJi09P3OUPUw-gY85b5pB54z1fZwkeUjHFb-u1dkOJOG5Nbx95oFRQ=w1412-h236-s-no?authuser=0" alt=""> -->
         <div class=" divLogin">
             <h1>Iniciar sesión</h1>
             <form id="loginForm">
@@ -29,10 +30,9 @@
                 <label for="password">Contraseña:</label>
                 <input id="password" type="password" id="password" name="password">
                 <div class="divButtons">
-                    <input id="loginButton" type="button" value="Iniciar sesión">
-                    <input id="registerButton" type="button" value="Registrarse">
+                    <input id="loginButton" type="submit" value="Iniciar sesión">
+                    <input id="registerButton" type="submit" value="Registrarse">
                 </div>
-                
             </form>
         </div>
     </main>
