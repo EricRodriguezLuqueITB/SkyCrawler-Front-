@@ -18,7 +18,7 @@ class UIManager
         buttonLogout.appendChild(imgLogout);
         buttonLogout.addEventListener("click",function()
         {
-            window.close();
+            window.location.replace('index.html');
         })
 
         divBarraControl.appendChild(buttonLogout);
@@ -180,7 +180,7 @@ class UIManager
         cosa.innerHTML = "";
     }
 
-    printarSelectIdioma(array,ventana)
+    printarSelectProvincia(array,ventana)
     {
         let form = ventana.document.getElementById("provinciaForm");
         let select = ventana.document.getElementById("opciones");
@@ -196,6 +196,5 @@ class UIManager
         button.addEventListener("click",generarNuevoUsuario)
         button.textContent = "Enviar";
         form.appendChild(button);
-
     }
 }

@@ -29,6 +29,7 @@ class Jugador {
         this.Nombre = Nombre;
         this.NivelMaximo = NivelMaximo;
         this.Ciudad = Ciudad;
+        this.Tiempo = 0;
         
     }
 }

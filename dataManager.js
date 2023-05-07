@@ -19,13 +19,11 @@ class DataManager {
             3.- Usuario y contraseña correctos
         */
     }
-    getJugadorInfo(Usuario /* string */) {
+    async getJugadorInfo(Usuario /* string */) {
         // Pide a la Api la información referente a un usuario con nombreJugador = Usuario
-        fetch()
-            .then(response => response.json())
-            .then(function (data) {
-                return new Jugador(data.Nombre, data.NivelMaximo,)
-            });
+        const response = await fetch(this.conexionBase + 'api/jugador/'+Usuario);
+        const data = await response.json();
+        return data;
     }
     getJugadorAnimacion() {
         // Pide a la Api el conjunto de sprites referente al Jugador y lo retorna
