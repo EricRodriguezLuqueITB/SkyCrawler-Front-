@@ -18,7 +18,7 @@ setTimeout(() => {
     UI.printarMenu();
   }, 100);
 
-
+//fdf
 async function getJugadorInfo(/* string */) {
     const datos = await cerebro.getJugadorInfo(nombre_Jugador);
     Jugador_Data =  datos;
