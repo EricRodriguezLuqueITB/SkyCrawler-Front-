@@ -81,7 +81,7 @@ class UIManager
         main.appendChild(section);
     }
     // Métodos
-    printarNiveles() 
+    printarNiveles(jugador) 
     {
         let main = document.getElementsByTagName("main")[0];
         main.className = "mainNiveles"

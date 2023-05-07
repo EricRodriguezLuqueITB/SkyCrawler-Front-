@@ -21,8 +21,9 @@ class DataManager {
     }
     async getJugadorInfo(Usuario /* string */) {
         // Pide a la Api la información referente a un usuario con nombreJugador = Usuario
-        const response = await fetch(this.conexionBase + 'api/jugador/'+Usuario);
+        const response = await fetch(this.conexionBase + 'api/jugador/'+ Usuario);
         const data = await response.json();
+        console.log(data);
         return data;
     }
     getJugadorAnimacion() {
