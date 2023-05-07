@@ -129,48 +129,70 @@ class UIManager
     {
         let main = document.getElementsByTagName("main")[0];
         main.innerHTML= "";
-        console.log(main);
         main.className = "mainNivel"
         this.printarBarraControl();
 
         let section = document.createElement("section");
-        section.className = "sectionMenu";
+        section.className = "sectionNivel";
 
         let nivel = document.createElement("h1");
         nivel.textContent = "NIVEL" + Nivel;
         section.appendChild(nivel);
         main.appendChild(section);
+        this.printarMapa(nivel);
     }
 
-    printarMapa(Nivel /* Nivel */) {
+    printarMapa(id /* Nivel */) {
         // Mostrará por pantalla el escenario especificado en el Mapa del
         // nivel pasado por parametro.
+
+        let nivelMapa = [[1,2,3,3,20,3,3,4,5],
+                    [6,7,8,8,8,8,8,9,10],
+                    [6,7,17,8,8,8,17,9,10],
+                    [6,7,8,8,8,8,8,9,10],
+                    [11,12,13,13,19,13,13,14,15]];
+                    
+        let nivel = new Nivel(nivelMapa);
+
         let main = document.getElementsByTagName("main")[0];
 
         let tablaNivel = document.createElement("table");
         tablaNivel.id = "tablaNivel";
         
-        Nivel.forEach(row => {
+        nivel.Mapa.forEach((row, i) => {
             var tr = document.createElement("tr");
-            row.forEach(element => {
+            row.forEach((element, i2) => {
                 var img = document.createElement("img");
-                img.src = `src/${element}.png`;
+                img.src = nivel.getSrc(element);
                 img.alt = element;
+                img.id = `coord:${i}-${i2}`;
+                img.classList.add("mapa");
+    
+                if(nivel.comprobarTipo(element)) img.classList.add("SinPisar");
+                else img.classList.add("Colision");
+    
                 tr.appendChild(img);
             });
             tablaNivel.appendChild(tr);
         });
-        main.appendChild(tablaNivel);
+
+        let section = document.getElementsByClassName("sectionNivel")[0];
+        section.appendChild(tablaNivel);
+        setTimeout(() => {
+            this.GenerarJugador(nivel);
+        }, 500);
     }
     printarRanking(Nivel /* Nivel */) {
 
         console.log("ranking");
         // Muestra por pantalla el ranking filtrado por nivel seleccionado.
     }
-    GenerarJugador(Jugador /* Jugador */) {
+    GenerarJugador(nivel /* Nivel */) {
         // Muestra al jugador en la posición especificada del mismo encima
         // del mapa y con el spriteActual especificado.
-        let personaje = new Personaje(DataManager.getJugadorAnimacion());
+
+        let personaje = new Personaje(4);
+        personaje.colocarInicial(nivel);
     }
     cambiarElemento(ObjetoViejo /* int[2] */, ObjetoNuevo /* int */) {
         // Cambia el objeto en las coordenadas de ObjetoViejo por el elemento

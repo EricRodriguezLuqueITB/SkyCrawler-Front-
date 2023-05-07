@@ -16,9 +16,9 @@ getJugadorInfo();
 setTimeout(() => {
     usuario = new Jugador(Jugador_Data.nombre_Jugador,Jugador_Data.nivel_actual,Jugador_Data.ciudad);   
     UI.printarMenu();
-  }, 100);
+  }, 500);
 
-//fdf
+
 async function getJugadorInfo(/* string */) {
     const datos = await cerebro.getJugadorInfo(nombre_Jugador);
     Jugador_Data =  datos;
