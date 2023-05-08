@@ -7,7 +7,7 @@ class Jugador {
     Ciudad;
     
     // Métodos
-    moverJugador(coord /* int[2] */) {
+    mover(coord /* int[2] */) {
         // Moverá al jugador a las coordenadas especificadas, normalmente comprobadas antes por la función comprobarColision de la clase Nivel
     }
     cronometro() {
@@ -25,12 +25,12 @@ class Jugador {
     // }
 
     // Constructores
-    constructor(Nombre, NivelMaximo, Ciudad) {
+    constructor(Nombre, NivelMaximo, Ciudad) 
+    {
         this.Nombre = Nombre;
         this.NivelMaximo = NivelMaximo;
         this.Ciudad = Ciudad;
         this.Tiempo = 0;
-        
     }
 }
 class Nivel {
@@ -46,14 +46,23 @@ class Nivel {
         return this.#RecursosMapa.get(id);
     }
     comprobarColision(x, y) {
+        let destino = document.getElementById(`coord:${x}-${y}`);
+
+        if(destino == undefined) return false; 
+
+        if(destino.classList.contains("Pisado") || destino.classList.contains("Colision")) return false;
+        /*
         let fila = this.#Mapa[x];
         let id = fila[y];
+
+        console.log(id);
        
         switch(id) {
             case 7:
             case 8:
             case 9:
             case 19:
+            case 21:
                 return true;
     
             case 1:
@@ -72,8 +81,9 @@ class Nivel {
             case 17:
             case 18:
             case 20:
+            case 22:
                 return false;
-        }
+        }*/return true;
     }
     comprobarTipo(id) {
     
@@ -81,6 +91,10 @@ class Nivel {
             case 7:
             case 8:
             case 9:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
                 return true;
     
             case 1:
@@ -98,8 +112,6 @@ class Nivel {
             case 16:
             case 17:
             case 18:
-            case 19:
-            case 20:
                 return false;
         }
     }
@@ -113,7 +125,7 @@ class Nivel {
 
         this.#RecursosMapa = new Map();
 
-        for (let index = 1; index < 21; index++) {
+        for (let index = 1; index < 23; index++) {
             this.#RecursosMapa.set(index, pre + index + suf);
         }
     }
@@ -139,9 +151,8 @@ class Personaje {
 
     
     // Movimiento con animación, depende de la velocidad del objeto y no se puede mover más de un bloque (para moverse más espacio usar "colocar()")
-    mover(UI, x, y, nivel) {
+    async mover(x, y, nivel) {
 
-        console.log(this.movimiento);
         if(this.movimiento) {console.log("No!");return;}
 
         let direccion = "";
@@ -166,8 +177,10 @@ class Personaje {
         if(nivel.comprobarColision(x, y)) {
 
             let destino = document.getElementById(`coord:${x}-${y}`);
-            destino.classList.add("Pisado");
-            destino.classList.remove("SinPisar");
+            if(x > 0) {
+                destino.classList.add("Pisado");
+                destino.classList.remove("SinPisar");
+            }
 
             this.coord = [x, y];
 
@@ -175,38 +188,38 @@ class Personaje {
             let total = 0;
             let id;
 
-            let coord = this.img.getBoundingClientRect();
-
-            id = setInterval(this.movimiento, Animacion, 10, direccion, this.velocidad, this.distancia());
-
-            function Animacion(movimiento, direccion, velocidad, distancia) {
-                let jugador = document.getElementById("jugador");
-                if (total >= distancia) {
-                    movimiento = false;
+            while(this.movimiento) {
+                if (total >= this.distancia()) {
+                    this.movimiento = false;
                     clearInterval(id);
-                    //UI.moverJugador(this, nivel, false);
                 } else {
+                    console.log(this.velocidad);
                     switch(direccion) {
                         case "Abajo":
-                            jugador.style.top = (parseInt(jugador.style.top.split("p")[0]) + velocidad) + 'px';
+                            this.img.style.top = (parseInt(this.img.style.top.split("p")[0]) + this.velocidad) + 'px';
                         break;
         
                         case "Arriba":
-                            jugador.style.top = (parseInt(jugador.style.top.split("p")[0]) - velocidad) + 'px';
+                            this.img.style.top = (parseInt(this.img.style.top.split("p")[0]) - this.velocidad) + 'px';
                         break;
                         
                         case "Derecha":
-                            jugador.style.left = (parseInt(jugador.style.left.split("p")[0]) + velocidad) + 'px';
+                            this.img.style.left = (parseInt(this.img.style.left.split("p")[0]) + this.velocidad) + 'px';
                         break;
                         
                         case "Izquierda":
-                            jugador.style.left = (parseInt(jugador.style.left.split("p")[0]) - velocidad) + 'px';
+                            this.img.style.left = (parseInt(this.img.style.left.split("p")[0]) - this.velocidad) + 'px';
                         break;
                     }
                 }
-                total += velocidad;
+                total += this.velocidad;
+                await this.sleep(10);
             }
         }
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     // Coloca sin animación
@@ -218,9 +231,6 @@ class Personaje {
         if(nivel.comprobarColision(x, y, nivel)) {
 
             this.coord = [x, y];
-    
-            let destino = document.getElementById(`coord:${x}-${y}`);
-            let coord = destino.getBoundingClientRect();
             
             this.img.style.top = `${(this.distancia() * y) + parentCoord.y}px`;
             this.img.style.left = `${(this.distancia() * x) + parentCoord.x}px`;
@@ -240,11 +250,10 @@ class Personaje {
     colocarInicial(nivel) {
 
         let parent = this.img.parentNode;
-        let parentCoord = parent.getBoundingClientRect();
         let section = document.getElementsByClassName("sectionNivel")[0];
 
         this.img.style.position = "absolute";
-        this.img.style.top = 0 + (section.offsetHeight / 2) - (parent.offsetHeight / 2) + (this.distancia() / 2) - 7 + "px";
+        this.img.style.top = 0 + (section.offsetHeight / 2) - (parent.offsetHeight / 2) + (this.distancia() / 2) + "px";
         this.img.style.left = 0 + (section.offsetWidth / 2) - (parent.offsetWidth / 2) + "px";
 
         let nivelMapa = nivel.Mapa;
@@ -253,9 +262,6 @@ class Personaje {
         let y = nivelMapa[nivelMapa.length - 1].indexOf(19);
 
         this.coord = [x, y];
-    
-        let destino = document.getElementById(`coord:${x}-${y}`);
-        let coord = destino.getBoundingClientRect();
         
         this.img.style.top = `${(this.distancia() * x) + parseInt(this.img.style.top.split("p")[0])}px`;
         this.img.style.left = `${(this.distancia() * y) + parseInt(this.img.style.left.split("p")[0])}px`;

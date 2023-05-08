@@ -21,16 +21,11 @@
 
 .sectionMenu
 {
-   display: flex;
    flex-direction: column;
-   justify-content: space-around;
-   height: 100%;
 }
 
 .mainMenu h1, .mainNiveles h1{
 
-  position: relative;
-   top: -0.5em;   
   text-align: center;
   font-size: 4em;
 

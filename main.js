@@ -16,11 +16,26 @@ function cambiarFuncionalidad()
   let button = document.getElementById("loginButton");
 
   if(checkbox.checked == true){
-
-    h1.innerHTML = "Registrarse";
+    let string = "Registrar";
+    h1.innerHTML = "";
+    let i = 0;
+    
+    let intervaloR = setInterval(() => {
+      if(i >= string.length - 1) clearInterval(intervaloR)
+      h1.innerHTML += string[i];
+      i++;
+    }, 50);
   }
   else{
-    h1.innerHTML = "Iniciar sesion";
+    let string = "Iniciar sesión";
+    h1.innerHTML = "";
+    let i = 0;
+    
+    let intervaloI = setInterval(() => {
+      if(i >= string.length - 1) clearInterval(intervaloI)
+      h1.innerHTML += string[i];
+      i++;
+    }, 50);
   }
 }
 
@@ -44,7 +59,7 @@ function comprobarPeticion(event) {
             if(checkbox.checked == true)
             {
                 printarPopUp(); 
-                redirect(username);
+               
             }
             else
             {
@@ -93,6 +108,7 @@ async function generarNuevoUsuario()
       .then(data => console.log(data))
       .catch(error => console.error(error));
     ventanaProvincia.close();
+    redirect(username);
 }
 
 async function printarPopUp()

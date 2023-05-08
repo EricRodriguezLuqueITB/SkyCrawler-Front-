@@ -10,9 +10,8 @@ table .mapa {
     align-self: center;
     padding: 0px;
     margin: 0px;
-    margin-top: -7px;
+    margin-top: -6px;
     width: 128px;
-    filter:drop-shadow(5px 10px 4px rgba(0, 0, 0, 0.589));
 }
 #jugador {
     width: 128px;
@@ -22,8 +21,18 @@ table .mapa {
 }
 .Pisado {
     /* filter: hue-rotate(90deg); */
-    filter: invert();
+    -webkit-animation: oscurecer 2s;
+    filter: brightness(50%);
 }
 .Colision {
-    
+
+}
+
+@-webkit-keyframes oscurecer {
+    0%  { -webkit-filter: brightness(100%); }
+    20%  { -webkit-filter: brightness(100%); }
+    40% { -webkit-filter: brightness(80%); }
+    60% { -webkit-filter: brightness(70%); }
+    80% { -webkit-filter: brightness(60%); }
+    100% { -webkit-filter: brightness(50%); }
 }

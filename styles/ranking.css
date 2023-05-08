@@ -1,0 +1,16 @@
+.sectionRanking{
+    display: flex;
+    flex-direction: wrap;
+    align-items: center;
+}
+
+#divMapa
+{
+    width: 60%;
+    height: 80%;
+}
+
+#divRanking{
+    width: 30%;
+    height: 80%;
+}

@@ -5,6 +5,7 @@ class UIManager
         this.NumNiveles = numLvl;
     }
 
+    // Métodos
     printarBarraControl()
     {
         let main = document.getElementsByTagName("main")[0];
@@ -80,7 +81,6 @@ class UIManager
         section.appendChild(divOptions);
         main.appendChild(section);
     }
-    // Métodos
     printarNiveles(jugador) 
     {
         let main = document.getElementsByTagName("main")[0];
@@ -100,8 +100,7 @@ class UIManager
         for(let i=0; i < this.NumNiveles;i++)
         {
             let buttonImg = document.createElement("button");
-            buttonImg.setAttribute("id","nivel"+ i);
-            buttonImg.addEventListener("click", printarNivel);
+            buttonImg.setAttribute("id","nivel"+ (i+1));
 
             if(jugador.NivelMaximo <= i)
             {
@@ -113,7 +112,10 @@ class UIManager
             }
             else
             {
-                buttonImg.textContent = i;
+                buttonImg.addEventListener("click", () => {
+                    this.printarNivel(i+1);
+                    });
+                buttonImg.textContent = (i+1);
             }
             divNiveles.appendChild(buttonImg);
         }
@@ -136,7 +138,8 @@ class UIManager
         section.className = "sectionNivel";
 
         let nivel = document.createElement("h1");
-        nivel.textContent = "NIVEL" + Nivel;
+        nivel.textContent = "NIVEL " + Nivel;
+        nivel.style.fontSize = "200%";
         section.appendChild(nivel);
         main.appendChild(section);
         this.printarMapa(nivel);
@@ -153,8 +156,6 @@ class UIManager
                     [11,12,13,13,19,13,13,14,15]];
                     
         let nivel = new Nivel(nivelMapa);
-
-        let main = document.getElementsByTagName("main")[0];
 
         let tablaNivel = document.createElement("table");
         tablaNivel.id = "tablaNivel";
@@ -185,12 +186,15 @@ class UIManager
 
             this.moverJugador(jugador, nivel, true);
 
-            let entrada = setInterval(() => {
+            let intervalo = setInterval(() => {
                 let SinPisar = document.getElementsByClassName("SinPisar");
-                if(SinPisar.length == 0) {
-                    nivel.Mapa[nivel.Mapa.indexOf(20)] = 19;
-                    let entrada = document.getElementById(`coord:0-${nivel.Mapa[0].indexOf(20)}`);
-                    entrada.src = nivel.getSrc(19);
+                if(SinPisar.length == 1) { //Dejo la entrada y la salida
+                    nivel.Mapa[0][nivel.Mapa[0].indexOf(20)] = 21;
+                    let salida = document.getElementById(`coord:0-${nivel.Mapa[0].indexOf(21)}`);
+                    salida.src = nivel.getSrc(21);
+                    salida.classList.add("SinPisar");
+                    salida.classList.remove("Colision");
+                    clearInterval(intervalo);
                 }
             }, 500);
         }, 500);
@@ -199,45 +203,67 @@ class UIManager
     moverJugador(jugador, nivel, primerMovimiento) {
 
         document.addEventListener("keydown", e => {
-            console.log(jugador.coord);
             let coord = jugador.coord;
             switch(e.code) {
                 case("KeyS"):
                 case("ArrowDown"):
-                    jugador.mover(this, coord[0] + 1, coord[1]);
+                    jugador.mover(coord[0] + 1, coord[1], nivel);
                 break;
 
                 case("KeyW"):
                 case("ArrowUp"):
 
-                if(primerMovimiento) {
-                    nivel.Mapa[nivel.Mapa.indexOf(19)] = 20;
-                    let entrada = document.getElementById(`coord:${nivel.Mapa.length - 1}-${nivel.Mapa[nivel.Mapa.length - 1].indexOf(19)}`);
-                    entrada.src = nivel.getSrc(20);
-                    primerMovimiento = false;
-                }
+                    if(primerMovimiento) {
+                        nivel.Mapa[nivel.Mapa.length - 1][nivel.Mapa[nivel.Mapa.length - 1].indexOf(19)] = 22;
+                        let entrada = document.getElementById(`coord:${nivel.Mapa.length - 1}-${nivel.Mapa[nivel.Mapa.length - 1].indexOf(22)}`);
+                        entrada.src = nivel.getSrc(22);
+                        entrada.classList.add("Colision");
+                        entrada.classList.remove("SinPisar");
+                        primerMovimiento = false;
+                    }
 
-                    jugador.mover(this, coord[0] - 1, coord[1], nivel);
+                    jugador.mover(coord[0] - 1, coord[1], nivel);
                 break;
                 
                 case("KeyA"):
                 case("ArrowLeft"):
-                    jugador.mover(this, coord[0], coord[1] - 1, nivel);
+                    jugador.mover(coord[0], coord[1] - 1, nivel);
                 break;
                 
                 case("KeyD"):
                 case("ArrowRight"):
-                    jugador.mover(this, coord[0], coord[1] + 1, nivel);
+                    jugador.mover(coord[0], coord[1] + 1, nivel);
                 break;
             }
             new Promise(resolve => setTimeout(resolve, 5000));
         });
     }
 
-    printarRanking(Nivel /* Nivel */) {
+    printarRanking(/* Nivel */) {
 
-        console.log("ranking");
-        // Muestra por pantalla el ranking filtrado por nivel seleccionado.
+        let main = document.getElementsByTagName("main")[0];
+        main.className = "mainNiveles"
+        main.innerHTML= "";
+        this.printarBarraControl();
+
+        let rankingH1 = document.createElement("h1");
+        rankingH1.textContent = "RANKING";
+        main.appendChild(rankingH1);
+
+        let section = document.createElement("section");
+        section.className = "sectionRanking";
+        
+        let divMapa = document.createElement("div");
+        divMapa.id = "divMapa";
+        section.appendChild(divMapa);
+
+        let divRanking = document. createElement("div");
+        divRanking.id = "divRanking";
+        section.appendChild(divRanking);
+
+        main.appendChild(section);
+
+        
     }
     GenerarJugador(nivel /* Nivel */) {
         // Muestra al jugador en la posición especificada del mismo encima
@@ -251,9 +277,7 @@ class UIManager
         // Cambia el objeto en las coordenadas de ObjetoViejo por el elemento
         // de de id (ObjetoNuevo).
     }
-    borrarElemento(cosa){
-        cosa.innerHTML = "";
-    }
+
 
     printarSelectProvincia(array,ventana)
     {
