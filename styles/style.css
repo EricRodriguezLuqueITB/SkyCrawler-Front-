@@ -1,3 +1,8 @@
+body {
+  background-image:url("http://rolu.sytes.net:5567/SKYCRAWLER/elementos/fondojuego.png"); 
+  background-size: 110vw;
+}
+
 *{
     border: 1px solid black;
     margin: 0px;
@@ -6,7 +11,6 @@
 
 }
 main{
-  background-color: blue;
     position: absolute;
     top: 0;
     bottom: 0;
