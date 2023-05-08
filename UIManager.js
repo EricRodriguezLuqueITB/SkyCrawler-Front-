@@ -129,48 +129,123 @@ class UIManager
     {
         let main = document.getElementsByTagName("main")[0];
         main.innerHTML= "";
-        console.log(main);
         main.className = "mainNivel"
         this.printarBarraControl();
 
         let section = document.createElement("section");
-        section.className = "sectionMenu";
+        section.className = "sectionNivel";
 
         let nivel = document.createElement("h1");
         nivel.textContent = "NIVEL" + Nivel;
         section.appendChild(nivel);
         main.appendChild(section);
+        this.printarMapa(nivel);
     }
 
-    printarMapa(Nivel /* Nivel */) {
+    printarMapa(id /* Nivel */) {
         // Mostrará por pantalla el escenario especificado en el Mapa del
         // nivel pasado por parametro.
+
+        let nivelMapa = [[1,2,3,3,20,3,3,4,5],
+                    [6,7,8,8,8,8,8,9,10],
+                    [6,7,17,8,8,8,17,9,10],
+                    [6,7,8,8,8,8,8,9,10],
+                    [11,12,13,13,19,13,13,14,15]];
+                    
+        let nivel = new Nivel(nivelMapa);
+
         let main = document.getElementsByTagName("main")[0];
 
         let tablaNivel = document.createElement("table");
         tablaNivel.id = "tablaNivel";
         
-        Nivel.forEach(row => {
+        nivel.Mapa.forEach((row, i) => {
             var tr = document.createElement("tr");
-            row.forEach(element => {
+            row.forEach((element, i2) => {
                 var img = document.createElement("img");
-                img.src = `src/${element}.png`;
+                img.src = nivel.getSrc(element);
                 img.alt = element;
+                img.id = `coord:${i}-${i2}`;
+                img.classList.add("mapa");
+    
+                if(nivel.comprobarTipo(element)) img.classList.add("SinPisar");
+                else img.classList.add("Colision");
+    
                 tr.appendChild(img);
             });
             tablaNivel.appendChild(tr);
         });
-        main.appendChild(tablaNivel);
+
+        let section = document.getElementsByClassName("sectionNivel")[0];
+        let jugador;
+
+        section.appendChild(tablaNivel);
+        setTimeout(() => {
+            jugador = this.GenerarJugador(nivel);
+
+            this.moverJugador(jugador, nivel, true);
+
+            let entrada = setInterval(() => {
+                let SinPisar = document.getElementsByClassName("SinPisar");
+                if(SinPisar.length == 0) {
+                    nivel.Mapa[nivel.Mapa.indexOf(20)] = 19;
+                    let entrada = document.getElementById(`coord:0-${nivel.Mapa[0].indexOf(20)}`);
+                    entrada.src = nivel.getSrc(19);
+                }
+            }, 500);
+        }, 500);
     }
+
+    moverJugador(jugador, nivel, primerMovimiento) {
+
+        document.addEventListener("keydown", e => {
+            console.log(jugador.coord);
+            let coord = jugador.coord;
+            switch(e.code) {
+                case("KeyS"):
+                case("ArrowDown"):
+                if(jugador.mover(this, coord[0] + 1, coord[1])) {jugador.movimiento = false; console.log("Movimiento = false");}
+                break;
+
+                case("KeyW"):
+                case("ArrowUp"):
+
+                if(primerMovimiento) {
+                    nivel.Mapa[nivel.Mapa.indexOf(19)] = 20;
+                    let entrada = document.getElementById(`coord:${nivel.Mapa.length - 1}-${nivel.Mapa[nivel.Mapa.length - 1].indexOf(19)}`);
+                    entrada.src = nivel.getSrc(20);
+                    primerMovimiento = false;
+                }
+
+                if(jugador.mover(this, coord[0] - 1, coord[1], nivel)) {jugador.movimiento = false; console.log("Movimiento = false");}
+                break;
+                
+                case("KeyA"):
+                case("ArrowLeft"):
+                if(jugador.mover(this, coord[0], coord[1] - 1, nivel)) {jugador.movimiento = false; console.log("Movimiento = false");}
+                break;
+                
+                case("KeyD"):
+                case("ArrowRight"):
+                if(jugador.mover(this, coord[0], coord[1] + 1, nivel)) {jugador.movimiento = false; console.log("Movimiento = false");}
+                break;
+            }
+            new Promise(resolve => setTimeout(resolve, 5000));
+        });
+    }
+
     printarRanking(Nivel /* Nivel */) {
 
         console.log("ranking");
         // Muestra por pantalla el ranking filtrado por nivel seleccionado.
     }
-    GenerarJugador(Jugador /* Jugador */) {
+    GenerarJugador(nivel /* Nivel */) {
         // Muestra al jugador en la posición especificada del mismo encima
         // del mapa y con el spriteActual especificado.
-        let personaje = new Personaje(DataManager.getJugadorAnimacion());
+
+        let jugador = new Personaje(4);
+        jugador.colocarInicial(nivel);
+        return jugador;
     }
     cambiarElemento(ObjetoViejo /* int[2] */, ObjetoNuevo /* int */) {
         // Cambia el objeto en las coordenadas de ObjetoViejo por el elemento
