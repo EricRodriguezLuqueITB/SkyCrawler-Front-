@@ -204,7 +204,7 @@ class UIManager
             switch(e.code) {
                 case("KeyS"):
                 case("ArrowDown"):
-                if(jugador.mover(this, coord[0] + 1, coord[1])) {jugador.movimiento = false; console.log("Movimiento = false");}
+                    jugador.mover(this, coord[0] + 1, coord[1]);
                 break;
 
                 case("KeyW"):
@@ -217,17 +217,17 @@ class UIManager
                     primerMovimiento = false;
                 }
 
-                if(jugador.mover(this, coord[0] - 1, coord[1], nivel)) {jugador.movimiento = false; console.log("Movimiento = false");}
+                    jugador.mover(this, coord[0] - 1, coord[1], nivel);
                 break;
                 
                 case("KeyA"):
                 case("ArrowLeft"):
-                if(jugador.mover(this, coord[0], coord[1] - 1, nivel)) {jugador.movimiento = false; console.log("Movimiento = false");}
+                    jugador.mover(this, coord[0], coord[1] - 1, nivel);
                 break;
                 
                 case("KeyD"):
                 case("ArrowRight"):
-                if(jugador.mover(this, coord[0], coord[1] + 1, nivel)) {jugador.movimiento = false; console.log("Movimiento = false");}
+                    jugador.mover(this, coord[0], coord[1] + 1, nivel);
                 break;
             }
             new Promise(resolve => setTimeout(resolve, 5000));

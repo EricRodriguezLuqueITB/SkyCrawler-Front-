@@ -3,7 +3,7 @@ body {
     background-image:url("http://rolu.sytes.net:5567/SKYCRAWLER/elementos/fondotitulo.png"); 
     background-size: 110vw;
   }
-
+  
 .mainLogin
 {   
     display: flex;
@@ -16,7 +16,9 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    
     height: 40vh;
+    width: 30vw;
     padding: 1em;
     border: 1px solid black;
 }
@@ -58,6 +60,12 @@ body {
     width: 70%;
     position: relative;
     top: -5em;
+}
+
+.divCheckBox
+{
+    display: flex;
+    flex-direction:row;
 }
 
 
