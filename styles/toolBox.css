@@ -23,6 +23,7 @@
     background-color: #ccc;
     -webkit-transition: .4s;
     transition: .4s;
+    
   }
   
   .slider:before {
@@ -35,6 +36,7 @@
     -webkit-transition: .4s;
     transition: .4s;
     background-color: #7d7bac;
+
   }
 
   .slider:hover{

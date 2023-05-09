@@ -25,9 +25,35 @@ async function CargarDatos()
 
 }
 
+async function CargarNiveles() 
+{
+    niveles = await cerebro.getInfo("nivel", "");
+}
+
+function acabarNivel(personaje, victoria) 
+{
+    // Manda los datos al ranking si victoria = true
+    //
+
+    // Actualizar Nivel Actual del jugador
+    //
+
+    // Reinicia las coordenadas del personaje para el siguiente nivel
+    delete personaje;
+
+    // Reseteamos los niveles
+    this.CargarNiveles();
+
+    // Printa el menú
+    this.printarNiveles();
+}
+
 async function cargarRanking() {
     let rankingData = await cerebro.getInfo("ranking", "")
-    UI.printarRanking();
+    console.log(rankingData);
+
+    window.open("MapaRanking.html?ranking_data="+ JSON.stringify(rankingData));
+    //UI.printarRanking(rankingData);
 }
 
 function printarNivel() {
@@ -43,6 +69,6 @@ function printarNivel(event) {
 }
 
 function printarNiveles() {
-    UI.printarNiveles(usuario);
+    UI.printarNiveles(usuario, niveles);
 }
 
