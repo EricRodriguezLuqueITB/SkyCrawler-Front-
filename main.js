@@ -7,6 +7,7 @@ let ventanaProvincia;
 //http://rolu.sytes.net:7053/swagger/index.html
 //http://rolu.sytes.net:5567/SKYCRAWLER/
 
+
 document.getElementById("loginForm").addEventListener("submit", comprobarPeticion);
 document.getElementById("checkbox").addEventListener("click", cambiarFuncionalidad)
 
@@ -38,7 +39,7 @@ function cambiarFuncionalidad() {
     let i = 0;
 
     let intervaloI = setInterval(() => {
-      if (i >= string.length - 1) clearInterval(intervaloI)
+      if (i >= string.length - 1) clearInterval(intervaloI);
       h1.innerHTML += string[i];
       i++;
     }, 50);
@@ -48,7 +49,7 @@ function cambiarFuncionalidad() {
 function comprobarPeticion(event) {
   event.preventDefault();
   const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+  const password = cifradoXOR(document.getElementById("password").value, "DICE");
   let checkbox = document.getElementById("checkbox");
 
   // Validar que los campos no estén vacíos
@@ -106,15 +107,6 @@ function cifradoXOR(texto, clave) {
   let resultado = '';
   for (let i = 0; i < texto.length; i++) {
     let caracter = texto.charCodeAt(i) ^ clave.charCodeAt(i % clave.length);
-    resultado += String.fromCharCode(caracter);
-  }
-  return resultado;
-}
-
-function descifradoXOR(textoCifrado, clave) {
-  let resultado = '';
-  for (let i = 0; i < textoCifrado.length; i++) {
-    let caracter = textoCifrado.charCodeAt(i) ^ clave.charCodeAt(i % clave.length);
     resultado += String.fromCharCode(caracter);
   }
   return resultado;

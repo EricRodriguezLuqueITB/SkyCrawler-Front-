@@ -28,7 +28,12 @@ class UIManager {
             imgBack.setAttribute("src", "https://static.vecteezy.com/system/resources/previews/000/365/868/original/left-vector-icon.jpg");
             imgBack.setAttribute("alt", "Logout");
             buttonBack.appendChild(imgBack);
-            buttonBack.addEventListener("click", printarMenu)
+            if(main.className == "MainNivel") {
+                buttonBack.addEventListener("click", acabarNivel, jugador, true)
+            }
+            else {
+                buttonBack.addEventListener("click", printarMenu)
+            }
             // {
             //     // switch(document.getElementsByTagName("Main")[0].className)
             //     // {
@@ -80,7 +85,7 @@ class UIManager {
         section.appendChild(divOptions);
         main.appendChild(section);
     }
-    printarNiveles(jugador, niveles, event) {
+    printarNiveles(jugador, niveles) {
 
         document.body.style.backgroundImage = "url('http://rolu.sytes.net:5567/SKYCRAWLER/elementos/fondotitulo.png')";
 
@@ -89,10 +94,10 @@ class UIManager {
         main.innerHTML = "";
         this.printarBarraControl();
         let section = document.createElement("section");
-        section.className = "sectionMenu";
+        section.className = "sectionNiveles";
 
         let nivelesH1 = document.createElement("h1");
-        nivelesH1.textContent = "NIVELES";
+        nivelesH1.textContent = "Selecciona un nivel";
         section.appendChild(nivelesH1);
 
         let divNiveles = document.createElement("div");
@@ -103,15 +108,17 @@ class UIManager {
             buttonImg.setAttribute("id", "nivel" + (i + 1));
 
             if (jugador.NivelMaximo <= i) {
-                let img = document.createElement("img");
-                img.className = "candado";
-                img.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/345/345535.png?w=360")
-                img.setAttribute("alt", "candado");
-                buttonImg.appendChild(img);
+                // let img = document.createElement("img");
+                // img.className = "candado";
+                // img.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/345/345535.png?w=360")
+                // img.setAttribute("alt", "candado");
+                // buttonImg.appendChild(img);
+                buttonImg.classList.add("bloqueado")
             }
             else {
-                buttonImg.addEventListener("click", (event) => {
-                    printarNivel(event);
+                buttonImg.addEventListener("click", (event) => 
+                {
+                    this.printarNivel(niveles, event);
 
                 });
                 buttonImg.textContent = (i + 1);
@@ -152,7 +159,6 @@ class UIManager {
         // Mostrará por pantalla el escenario especificado en el Mapa del
         // nivel pasado por parametro.
         let pruebaNivel = stringNivel.mapa.split("/");
-        console.log(pruebaNivel);
 
         let nivelMapa = [pruebaNivel.length];
 
@@ -195,7 +201,7 @@ class UIManager {
         setTimeout(() => {
             jugador = this.GenerarJugador(nivel);
 
-            this.moverJugador(jugador, nivel, true);
+            this.moverPersonaje(jugador, nivel, true);
 
             let intervalo = setInterval(() => {
                 let SinPisar = document.getElementsByClassName("SinPisar");
@@ -210,89 +216,112 @@ class UIManager {
             }, 500);
         }, 500);
     }
+    moverPersonaje(personaje, nivel, primerMovimiento) {
 
-    moverJugador(jugador, nivel, primerMovimiento) {
+        let seguir = true;
 
         document.addEventListener("keydown", e => {
-            let coord = jugador.coord;
-            switch (e.code) {
-                case ("KeyS"):
-                case ("ArrowDown"):
-                    jugador.mover(coord[0] + 1, coord[1], nivel);
-                    break;
+            if(seguir) {
+                let coord = personaje.coord;
+                switch (e.code) {
+                    case ("KeyS"):
+                    case ("ArrowDown"):
+                        personaje.mover(coord[0] + 1, coord[1], nivel);
+                        break;
 
-                case ("KeyW"):
-                case ("ArrowUp"):
+                    case ("KeyW"):
+                    case ("ArrowUp"):
 
-                    if (primerMovimiento) {
-                        nivel.Mapa[nivel.Mapa.length - 1][nivel.Mapa[nivel.Mapa.length - 1].indexOf(19)] = 22;
-                        let entrada = document.getElementById(`coord:${nivel.Mapa.length - 1}-${nivel.Mapa[nivel.Mapa.length - 1].indexOf(22)}`);
-                        entrada.src = nivel.getSrc(22);
-                        entrada.classList.add("Colision");
-                        entrada.classList.remove("SinPisar");
-                        primerMovimiento = false;
-                    }
-                    
-                    jugador.mover(coord[0] - 1, coord[1], nivel);
-                    console.log(nivel.Mapa[coord[0] - 1][coord[1]]);
-                    console.log("Holi");
-                    // if(nivel.Mapa[coord[0] - 1][coord[1]] == 21) setTimeout(alert("Acabo mi elmanito.");console.log("Adew"), 5000);
-                    break;
+                        if (primerMovimiento) {
+                            nivel.Mapa[nivel.Mapa.length - 1][nivel.Mapa[nivel.Mapa.length - 1].indexOf(19)] = 22;
+                            let entrada = document.getElementById(`coord:${nivel.Mapa.length - 1}-${nivel.Mapa[nivel.Mapa.length - 1].indexOf(22)}`);
+                            entrada.src = nivel.getSrc(22);
+                            entrada.classList.add("Colision");
+                            entrada.classList.remove("SinPisar");
+                            primerMovimiento = false;
+                        }
+                        
+                        personaje.mover(coord[0] - 1, coord[1], nivel);
+                        break;
 
-                case ("KeyA"):
-                case ("ArrowLeft"):
-                    jugador.mover(coord[0], coord[1] - 1, nivel);
-                    break;
+                    case ("KeyA"):
+                    case ("ArrowLeft"):
+                        personaje.mover(coord[0], coord[1] - 1, nivel);
+                        break;
 
-                case ("KeyD"):
-                case ("ArrowRight"):
-                    jugador.mover(coord[0], coord[1] + 1, nivel);
-                    break;
+                    case ("KeyD"):
+                    case ("ArrowRight"):
+                        personaje.mover(coord[0], coord[1] + 1, nivel);
+                        break;
+                }
+                if(nivel.Mapa[coord[0]][coord[1]] == 21) {
+                    coord = [0,0];
+                    setTimeout(acabarNivel(jugador, true), 2000);
+                    seguir = false;
+                }
             }
-            new Promise(resolve => setTimeout(resolve, 5000));
+            this.sleep(50);
         });
     }
 
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+
     printarRanking(data/* Nivel */) 
     {
-        console.log(data);
-        let main = document.getElementsByTagName("main")[0];
-        main.className = "mainNiveles"
-        main.innerHTML = "";
-        this.printarBarraControl();
+        // console.log(data);
+        // let main = document.getElementsByTagName("main")[0];
+        // main.className = "mainNiveles"
+        // main.innerHTML = "";
+        // this.printarBarraControl();
 
-        let rankingH1 = document.createElement("h1");
-        rankingH1.textContent = "RANKING";
-        main.appendChild(rankingH1);
+        // let rankingH1 = document.createElement("h1");
+        // rankingH1.textContent = "RANKING";
+        // main.appendChild(rankingH1);
 
-        let section = document.createElement("section");
-        section.className = "sectionRanking";
+        // let section = document.createElement("section");
+        // section.className = "sectionRanking";
 
-        let divMapa = document.createElement("div");
-        divMapa.id = "divMapa";
-        section.appendChild(divMapa);
+        // let divMapa = document.createElement("div");
+        // divMapa.id = "divMapa";
+        // section.appendChild(divMapa);
 
-        let divRanking = document.createElement("div");
-        divRanking.id = "divRanking";
-        section.appendChild(divRanking);
+        // let divRanking = document.createElement("div");
+        // divRanking.id = "divRanking";
+        // section.appendChild(divRanking);
+        // main.appendChild(section);
+        
 
-        main.appendChild(section);
-
-
+        window.open("MapaRanking.html");
     }
     GenerarJugador(nivel /* Nivel */) {
-        // Muestra al jugador en la posición especificada del mismo encima
+        // Muestra al personaje en la posición especificada del mismo encima
         // del mapa y con el spriteActual especificado.
 
-        let jugador = new Personaje(4);
-        jugador.colocarInicial(nivel);
-        return jugador;
+        let personaje = new Personaje(4);
+        personaje.colocarInicial(nivel);
+        return personaje;
     }
     cambiarElemento(ObjetoViejo /* int[2] */, ObjetoNuevo /* int */) {
         // Cambia el objeto en las coordenadas de ObjetoViejo por el elemento
         // de de id (ObjetoNuevo).
     }
 
+
+    printarFinalNivel()
+    {
+        let section = document.getElementsByTagName("section")[0];
+        let divFinal = document.createElement("div");
+        divFinal.className = "divFinal";
+        
+        let h1 = document.createElement("h1");
+        h1.textContent = "FIN";
+
+
+
+    }
 
     // printarSelectProvincia(array, ventana) {
     //     let form = ventana.document.getElementById("provinciaForm");

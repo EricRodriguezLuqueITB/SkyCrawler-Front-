@@ -10,8 +10,6 @@ async function CargarDatosProvincias()
     const urlActual = new URL(window.location.href);
     const datosCodificados = urlActual.searchParams.get("datos");
     datos = JSON.parse(decodeURIComponent(datosCodificados));
-    console.log(datos); // data
-
 
     let provincias = await cerebro.getLocalizaciones();
 
@@ -47,8 +45,8 @@ async function generarNuevoUsuario()
 {
     const data = {
         nombre_Jugador: datos.nombre,
-        contraseña: datos.pwd,
-        nivel_Actual:1,
+        contraseña: cifradoXOR(datos.pwd,"DICE"),
+        nivel_Actual: 1,
         ciudad: document.getElementById("opciones").value
       };
 
@@ -62,7 +60,7 @@ async function generarNuevoUsuario()
         body: JSON.stringify(data)
       })
       .then(response => response.json())
-      .then(data =>console.log(data))
+      .then(data =>redirect(datos.nombre))
       .catch(error => console.error(error))
 
 }
@@ -71,15 +69,6 @@ function cifradoXOR(texto, clave) {
     let resultado = '';
     for (let i = 0; i < texto.length; i++) {
       let caracter = texto.charCodeAt(i) ^ clave.charCodeAt(i % clave.length);
-      resultado += String.fromCharCode(caracter);
-    }
-    return resultado;
-  }
-
-  function descifradoXOR(textoCifrado, clave) {
-    let resultado = '';
-    for (let i = 0; i < textoCifrado.length; i++) {
-      let caracter = textoCifrado.charCodeAt(i) ^ clave.charCodeAt(i % clave.length);
       resultado += String.fromCharCode(caracter);
     }
     return resultado;

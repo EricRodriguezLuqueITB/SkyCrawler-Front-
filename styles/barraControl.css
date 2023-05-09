@@ -1,11 +1,17 @@
+.barraControl {
+    height: 10%;
+}
+
 .barraControl img
 {
     display: flex;
     width: 3em;
+    background-color: none;
 }
 
 .barraControl button
 {
    margin-right: 2em;
-   border:none;
+   border: none;
+   background-color:none;
 }

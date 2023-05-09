@@ -12,7 +12,7 @@
 }
 
 .botonesMenu {
-    font-size: 6em;
+    font-size: 8em;
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: #3e3c49;
     background: #E3E2ED;
@@ -40,4 +40,8 @@
     max-width: 100%;
     height: auto;
     align-self: center;
+}
+
+.bloqueado {
+    filter: brightness(25%);
 }

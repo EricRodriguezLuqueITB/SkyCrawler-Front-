@@ -2,18 +2,12 @@ class Jugador {
     // Atributos
     Nombre;
     NivelMaximo;
-    Tiempo;
     #Posicion;
     Ciudad;
     
     // Métodos
     mover(coord /* int[2] */) {
         // Moverá al jugador a las coordenadas especificadas, normalmente comprobadas antes por la función comprobarColision de la clase Nivel
-    }
-    cronometro() {
-        setInterval(() => {
-            // Temporizador para el ranking de puntuaciones
-        }, interval);
     }
 
     get Posicion(){
@@ -138,6 +132,7 @@ class Personaje {
                 "http://rolu.sytes.net:5567/SKYCRAWLER/MC/MCL.png"];
     velocidad;
     movimiento = false;
+    tiempo;
 
     // Métodos
     animacion(fila) {
@@ -210,6 +205,11 @@ class Personaje {
             }
         }
     }
+    cronometro() {
+        setInterval(() => {
+            this.tiempo++;
+        }, 1000);
+    }
 
     sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -269,6 +269,7 @@ class Personaje {
         document.getElementById("tablaNivel").appendChild(this.img);
 
         this.velocidad = velocidad;
+        this.tiempo = 0;
     }
 }
 class Localizaciones {

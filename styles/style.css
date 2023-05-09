@@ -8,7 +8,10 @@ body {
     margin: 0px;
     padding: 0px;
     /* box-sizing: border-box; */
-
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select:none;
+    user-select:none;
 }
 main{
 
@@ -30,4 +33,15 @@ section{
   display: flex;
   justify-content: space-around;
   height: 90%;
+}
+
+#logo {
+  width: 15%;
+  position:absolute;
+  right: -3%;
+  top: 65%
+}
+
+#logo:hover {
+  width: 16%;
 }

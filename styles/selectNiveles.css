@@ -1,18 +1,54 @@
-.divNiveles button
-{
-    width: 10vw;
-    height: 10vw;
-    border-radius: 100px;
+h1 {
+    font-size: 7em;
+    -webkit-text-stroke-width: 3px;
+    -webkit-text-stroke-color: #3e3c49;
+    background: #E3E2ED;
+    background: linear-gradient(to bottom, #ebe2ed 45%, rgb(132, 105, 135) 72%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
 }
 
-.divNiveles{
+.divNiveles button {
+    width: 20%;
+    height: 30%;
+    border: transparent;
+    background: transparent;
+    background-image: url("http://rolu.sytes.net:5567/SKYCRAWLER/elementos/cloudicon.png");
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-size: 3em;
+    color: #7c73ad;
+    text-align: center;
+    padding-left: 5px;
+    padding-top: 15px;
+}
+
+.sectionNiveles {
     display: flex;
-    justify-content: space-around;
-    flex-direction: row;        
-    position: relative;
-    top: -6em;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border-color: transparent;
+    border-radius: 20px;
+    background-color: rgba(185, 179, 220, 0.534);
+    backdrop-filter: blur(50px);
+
 }
 
-.divNiveles img{
+.divNiveles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 60%;
+}
+
+.divNiveles img {
     width: 7em;
 }

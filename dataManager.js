@@ -3,18 +3,9 @@ class DataManager {
     constructor(){
 
     }
-
     conexionBase = 'http://rolu.sytes.net:7053/';
     // No tiene atributo
-
-    getNumLevels() { //Cambiar
-        return 4;
-    }
     // Métodos
-    getRanking() {
-        // Recogerá por la Api la tablaNivel de puntuaciones (Ranking)
-        // de la base de datos (ElephantSQL) y la devolverá en forma de array de objetos.
-    }
     comprobarPeticion(Usuario /* string */, Contraseña /* string */) {
         /*
         Mandará a la Api comprobar si existe el usuario y contraseñas especificado.
@@ -32,9 +23,6 @@ class DataManager {
         return data;
     }
     
-    getJugadorAnimacion() {
-        // Pide a la Api el conjunto de sprites referente al Jugador y lo retorna
-    }
     async getRecursos() 
     {
         // Pide a la Api el conjunto de elementos (recursos) de los niveles y los retorna
@@ -42,8 +30,20 @@ class DataManager {
         const data = await response.json();
         return data;
     }
-    insertPuntuacion(NombreJugador /* string */, Tiempo /* int */, NivelGuardado /* int */, Ciudad /* string */) {
+
+    async insertPuntuacion(NombreJugador /* string */, Tiempo /* int */, NivelGuardado /* int */, Ciudad /* string */) 
+    {
         // Manda a la Api una puntuación para que se inserte en la tablaNivel ranking de la BBDD
+        await fetch(conexionBase + 'api/ranking', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          })
+          .then(response => response.json())
+          .then(data =>console.json())
+          .catch(error => console.error(error))
     }
     registrarJugador(NombreJugador /* string */, Contrasenia /* string */) {
         // Manda a la Api un usuario para que lo inserte en la tablaNivel Jugador *La contraseña tiene que encriptarse
