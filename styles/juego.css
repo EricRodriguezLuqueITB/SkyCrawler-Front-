@@ -16,6 +16,9 @@ table .mapa {
 #jugador {
     width: 128px;
 }
+.Colision {
+
+}
 .SinPisar {
 
 }
@@ -24,15 +27,9 @@ table .mapa {
     -webkit-animation: oscurecer 2s;
     filter: brightness(50%);
 }
-.Colision {
-
-}
 
 @-webkit-keyframes oscurecer {
     0%  { -webkit-filter: brightness(100%); }
     20%  { -webkit-filter: brightness(100%); }
-    40% { -webkit-filter: brightness(80%); }
-    60% { -webkit-filter: brightness(70%); }
-    80% { -webkit-filter: brightness(60%); }
     100% { -webkit-filter: brightness(50%); }
 }

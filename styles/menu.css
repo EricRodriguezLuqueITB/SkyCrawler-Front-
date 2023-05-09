@@ -1,32 +1,43 @@
-.mainMenu
-{
+.mainMenu {
     display: flex;
     padding: 2em;
-    
 }
 
-.divOptions
-{
+.divOptions {
+    height: 65%;
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
-.botonesMenu
-{
-    width: 30vw;
-    height: 60vh;
-    font-size: 4em;
+.botonesMenu {
+    font-size: 6em;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: #3e3c49;
+    background: #E3E2ED;
+    background: linear-gradient(to bottom, #E3E2ED 45%, #6D6987 72%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.sectionMenu
-{
-   flex-direction: column;
+.botonesMenu:hover {
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: #261c1b;
+    background: #8F6968;
+    background: linear-gradient(to top, #8F6968 28%, #F7E2E1 62%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.mainMenu h1, .mainNiveles h1{
+.sectionMenu {
+    width: 100%;
+    flex-direction: column;
+}
 
-  text-align: center;
-  font-size: 4em;
-
+.sectionMenu img {
+    max-width: 100%;
+    height: auto;
+    align-self: center;
 }

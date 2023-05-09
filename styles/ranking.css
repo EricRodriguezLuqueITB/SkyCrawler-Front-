@@ -14,3 +14,7 @@
     width: 30%;
     height: 80%;
 }
+
+*{
+    border: 1px solid black;
+}

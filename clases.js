@@ -20,10 +20,6 @@ class Jugador {
         return this.#Posicion;
     }
 
-    // get Ciudad(){
-    //     return this.#Ciudad;
-    // }
-
     // Constructores
     constructor(Nombre, NivelMaximo, Ciudad) 
     {
@@ -186,14 +182,11 @@ class Personaje {
 
             this.movimiento = true;
             let total = 0;
-            let id;
 
             while(this.movimiento) {
                 if (total >= this.distancia()) {
                     this.movimiento = false;
-                    clearInterval(id);
                 } else {
-                    console.log(this.velocidad);
                     switch(direccion) {
                         case "Abajo":
                             this.img.style.top = (parseInt(this.img.style.top.split("p")[0]) + this.velocidad) + 'px';

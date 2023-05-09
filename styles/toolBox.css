@@ -32,17 +32,37 @@
     width: 26px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
+    background-color: #7d7bac;
+  }
+
+  .slider:hover{
+    background-color: #9593b9;
+  }
+
+  .slider:hover::before {
+    background-color: rgb(115, 103, 124);
   }
   
   input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #7d7bac;
+  }
+
+  input:checked + .slider:hover {
+    background-color: #9593b9;
+  }
+
+  input:checked + .slider:before {
+    background-color: #ccc;
+  }
+
+  input:checked + .slider:hover::before {
+    background-color: rgb(115, 103, 124);
   }
   
   input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #5357ca;
   }
   
   input:checked + .slider:before {

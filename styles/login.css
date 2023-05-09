@@ -73,6 +73,11 @@ input:valid {
 
 #loginButton {
     width: 40%;
+    font-size: 1em;
+}
+
+#loginButton:hover {
+    background-color: #bebae1;
 }
 
 .mainLogin img {
