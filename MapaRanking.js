@@ -3,60 +3,51 @@ conexionBase = 'http://rolu.sytes.net:7053/';
 let data;
 CargarDatos();
 
+async function CargarProvincias() {
 
-
-function CargarDatos() 
+    let cerebro = new DataManager();
+    let datos = await cerebro.getLocalizaciones();
+    return datos;
+}
+async function CargarDatos() 
 {
+    let provincias = await CargarProvincias();
+
     const urlActual = new URL(window.location.href);
     const datosCodificados = urlActual.searchParams.get("ranking_data");
     data = JSON.parse(datosCodificados);
     console.log(data[0].ciudad);
     var map = L.map('map').setView([40.463667, -3.74922], 7);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    maxZoom: 8,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);  
 
-        // Utilizar Leaflet para mostrar la ubicación en el mapa
     
-    
+    for (let i = 0; i < data.length; i++) {
+        for (let z= 0; z < provincias.length; z++) {
+            if(data[i].ciudad == provincias[z].ciudad){
+                var circle = L.circle([ provincias[z].latitud, provincias[z].longitud ], {
+                        color: 'red',
+                        fillColor: '#f03',
+                        fillOpacity: 0.5,
+                        radius: 10000
+                    }).addTo(map);  
 
-        // var circle = L.circle([latitud, longitud], {
-        //     color: 'red',
-        //     fillColor: '#f03',
-        //     fillOpacity: 0.5,
-        //     radius: 500
-        // }).addTo(map);
+                //Hacer Icono personalizado
+                // var greenIcon = L.icon({
+                //     iconUrl: 'http://rolu.sytes.net:5567/SKYCRAWLER/MC/MCF.png',
+                
+                    
+                    //     iconSize:     [38,55], // size of the icon       
+                    //     iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+                   
+                    // });
+                    // L.marker([provincias[z].latitud, provincias[z].longitud ], {icon: greenIcon}).addTo(map);
+            }
+        }
+    }
+
+
+    
 }
-
-
-    // Hacer una segunda llamada a la API para obtener la información de la ubicación
-//     fetch(`https://ejemplo.com/api/ciudad/${ciudad}`)
-//       .then(response => response.json())
-//       .then(ubicacion => {
-//         // Obtener los valores de latitud y longitud de la ubicación
-//         const latitud = ubicacion.latitud;
-//         const longitud = ubicacion.longitud;
-
-//         // Utilizar Leaflet para mostrar la ubicación en el mapa
-//         const mapa = L.map('mapa').setView([latitud, longitud], 8);
-//         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-//           maxZoom: 18
-//         }).addTo(mapa);
-//         L.marker([latitud, longitud]).addTo(mapa);
-
-//         var circle = L.circle([latitud,longitud], {
-//             color: 'red',
-//             fillColor: '#f03',
-//             fillOpacity: 0.5,
-//             radius: 500
-//         }).addTo(map);
-//       })
-//       .catch(error => {
-//         console.error('Error al obtener la ubicación:', error);
-//       });
-//   })
-//   .catch(error => {
-//     console.error('Error al obtener la información del jugador:', error);
-//   });

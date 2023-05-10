@@ -74,9 +74,14 @@ function comprobarPeticion(event) {
         alert("Contraseña incorrecta");
       }
       else {
-        document.getElementsByTagName("main")[0].innerHTML = "";
-        // printarMenu();
-        redirect(username);
+        if (checkbox.checked == true) {
+          alert("Usuario ya registrado");
+        }
+        else 
+        {
+          document.getElementsByTagName("main")[0].innerHTML = "";
+          redirect(username);
+        }
       }
     })
     .catch(error => console.error(error));
@@ -95,7 +100,7 @@ function redirect(nombre) {
 function printarPopUp() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
-  var datos = { nombre: username, pwd: password};
+  var datos = { nombre: username, pwd: password };
   window.open("popUp.html?datos=" + encodeURIComponent(JSON.stringify(datos)), "Provincia", "width=250,height=250");
 }
 

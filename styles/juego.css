@@ -11,10 +11,10 @@ table .mapa {
     padding: 0px;
     margin: 0px;
     margin-top: -6px;
-    width: 128px;
+    width: 96px;
 }
 #jugador {
-    width: 128px;
+    width: 96px;
 }
 .Colision {
 
@@ -26,6 +26,11 @@ table .mapa {
     /* filter: hue-rotate(90deg); */
     -webkit-animation: oscurecer 2s;
     filter: brightness(50%);
+}
+
+.divFinal{
+    width: 4em;
+    height: 3em;
 }
 
 @-webkit-keyframes oscurecer {

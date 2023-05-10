@@ -3,13 +3,13 @@ const conexionBase = 'http://rolu.sytes.net:7053/';
 let UI;
 
 var nombre_Jugador = localStorage.getItem("nombre_Jugador");
-localStorage.removeItem("nombre_Jugador");
 if (nombre_Jugador == null) window.location.replace("index.html");
 
 document.body.addEventListener("load", CargarDatos());
 
 let usuario;
 let niveles;
+let nivelesCopia; // Para resetear los niveles más tarde (por el cambio de puertas)
 let recursos;
 let jugador_Data;
 
@@ -27,11 +27,15 @@ async function CargarDatos()
 
 async function CargarNiveles() 
 {
-    niveles = await cerebro.getInfo("nivel", "");
+    niveles = nivelesCopia;
 }
 
 function acabarNivel(personaje, victoria) 
 {
+    personaje.cronometro(false);
+
+    UI.printarFinalNivel();
+    console.log("End ------ Victoria: " + victoria);
     // Manda los datos al ranking si victoria = true
     //
 
@@ -39,13 +43,13 @@ function acabarNivel(personaje, victoria)
     //
 
     // Reinicia las coordenadas del personaje para el siguiente nivel
-    delete personaje;
+    //setTimeout(delete personaje, 2000)
 
     // Reseteamos los niveles
-    this.CargarNiveles();
+    // this.CargarNiveles();
 
-    // Printa el menú
-    this.printarNiveles();
+    // // Printa el menú
+    // this.printarNiveles();
 }
 
 async function cargarRanking() {
@@ -53,7 +57,7 @@ async function cargarRanking() {
     console.log(rankingData);
 
     window.open("MapaRanking.html?ranking_data="+ JSON.stringify(rankingData));
-    //UI.printarRanking(rankingData);
+    //UI.printarRanking(ranking_Data);
 }
 
 function printarNivel() {

@@ -2,20 +2,12 @@
     display: flex;
     flex-direction: wrap;
     align-items: center;
+    height: 100%;
+    width: 100%;
 }
 
-#divMapa
-{
-    width: 60%;
-    height: 80%;
-}
 
 #divRanking{
     width: 30%;
     height: 80%;
-}
-
-*{
-    /* border: 1px solid black; */
-    overflow: hidden;
 }

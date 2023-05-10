@@ -38,9 +38,11 @@ class Nivel {
     comprobarColision(x, y) {
         let destino = document.getElementById(`coord:${x}-${y}`);
 
-        if(destino == undefined) return false; 
+        if(destino == undefined) return 0; 
 
-        if(destino.classList.contains("Pisado") || destino.classList.contains("Colision")) return false;
+        if(destino.classList.contains("Colision")) return 0;
+        if(destino.classList.contains("Pisado")) return -1;
+        return 1;
         /*
         let fila = this.#Mapa[x];
         let id = fila[y];
@@ -73,7 +75,7 @@ class Nivel {
             case 20:
             case 22:
                 return false;
-        }*/return true;
+        }*/
     }
     comprobarTipo(id) {
     
@@ -132,14 +134,14 @@ class Personaje {
                 "http://rolu.sytes.net:5567/SKYCRAWLER/MC/MCL.png"];
     velocidad;
     movimiento = false;
-    tiempo;
+    tiempo = 0;
+    pararTiempo = false;
 
     // Métodos
     animacion(fila) {
         // Cambia el SpriteActual pasando por toda la row seleccionada
         // de una en una generando una animación
     }
-
     
     // Movimiento con animación, depende de la velocidad del objeto y no se puede mover más de un bloque (para moverse más espacio usar "colocar()")
     async mover(x, y, nivel) {
@@ -165,7 +167,7 @@ class Personaje {
             direccion = "Izquierda";
         }
 
-        if(nivel.comprobarColision(x, y)) {
+        if(nivel.comprobarColision(x, y) == 1) {
 
             let destino = document.getElementById(`coord:${x}-${y}`);
             if(x > 0) {
@@ -204,10 +206,19 @@ class Personaje {
                 await this.sleep(10);
             }
         }
+        return false;
     }
-    cronometro() {
-        setInterval(() => {
+    cronometro(empieza) {
+        if(!empieza) {
+            this.pararTiempo = true;
+            console.log("ACABA TIEMPO" + this.tiempo);
+            return this.tiempo;
+        }
+        console.log("EMPIEZA TIEMPO");
+        let crono = setInterval(() => {
             this.tiempo++;
+            console.log(this.tiempo);
+            if(this.pararTiempo) clearInterval(crono);
         }, 1000);
     }
 
@@ -248,6 +259,9 @@ class Personaje {
         this.img.style.position = "absolute";
         this.img.style.top = 0 + (section.offsetHeight / 2) - (parent.offsetHeight / 2) + (this.distancia() / 2) + "px";
         this.img.style.left = 0 + (section.offsetWidth / 2) - (parent.offsetWidth / 2) + "px";
+        // this.img.style.position = "absolute";
+        // this.img.style.top = "0px";
+        // this.img.style.left = "0px";
 
         let nivelMapa = nivel.Mapa;
 
@@ -269,7 +283,6 @@ class Personaje {
         document.getElementById("tablaNivel").appendChild(this.img);
 
         this.velocidad = velocidad;
-        this.tiempo = 0;
     }
 }
 class Localizaciones {

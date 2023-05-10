@@ -8,19 +8,51 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
         integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
-        <script defer src="MapaRanking.js"></script>
-        <script src="dataManager.js"></script>
         
-        
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <script defer src="Ranking.js"></script>
+    <script defer src="MapaRanking.js"></script>
+    <script src="dataManager.js"></script>
+    <script src="UIManager.js"></script>
+   <link rel="stylesheet" href="styles/barraControl.css">
+   <link rel="stylesheet" href="styles/style.css">
+    <!-- <link rel="stylesheet" href="styles/ranking.css"> -->
+
+
 
     <title>Document</title>
-     <style>#map { height: 1000px; }</style>
+    <style>
+        *{
+            border: 1px solid black;
+        }
+
+        main{
+            height: 95vh;
+        }
+        .sectionRanking{
+            display: flex;
+        }
+        #map {
+            width:900px;
+            height: 600px;
+        }
+        #divRanking{
+            width: 500px;
+            height: 600px;
+        }
+
+    </style>
 </head>
 
 <body>
-    <div id="map"></div>
-   
+    <main class="mainRanking">
+    <!-- <h1>RANKING</h1>
+    <section class="sectionRanking">
+        <div id="map"></div>
+        <div id="divRanking"></div>
+    </section> -->
+    </main>
+    <img id="logo" src="http://rolu.sytes.net:5567/SKYCRAWLER/logo.png" />
 </body>
 
 </html>

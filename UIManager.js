@@ -12,10 +12,13 @@ class UIManager {
 
         let buttonLogout = document.createElement("button");
         let imgLogout = document.createElement("img");
-        imgLogout.setAttribute("src", "https://img.freepik.com/iconos-gratis/x-simbolo_318-1407.jpg");
+        imgLogout.setAttribute("src", "http://rolu.sytes.net:5567/SKYCRAWLER/elementos/cruz.png");
         imgLogout.setAttribute("alt", "Logout");
+        imgLogout.style.background = "transparent";
         buttonLogout.appendChild(imgLogout);
-        buttonLogout.addEventListener("click", function () {
+        buttonLogout.addEventListener("click", function () 
+        {
+            localStorage.removeItem("nombre_Jugador");
             window.location.replace('index.html');
         })
 
@@ -54,6 +57,8 @@ class UIManager {
 
     printarMenu() {
 
+        document.getElementById("logo").style.display = "flex"; 
+
         document.body.style.backgroundImage = "url('http://rolu.sytes.net:5567/SKYCRAWLER/elementos/fondotitulo.png')";
 
         let main = document.getElementsByTagName("main")[0];
@@ -86,6 +91,8 @@ class UIManager {
         main.appendChild(section);
     }
     printarNiveles(jugador, niveles) {
+
+        document.getElementById("logo").style.display = "block"; 
 
         document.body.style.backgroundImage = "url('http://rolu.sytes.net:5567/SKYCRAWLER/elementos/fondotitulo.png')";
 
@@ -134,6 +141,8 @@ class UIManager {
     }
 
     printarNivel(niveles, event) {
+
+        document.getElementById("logo").style.display = "none"; 
 
         document.body.style.backgroundImage = "url('http://rolu.sytes.net:5567/SKYCRAWLER/elementos/fondojuego.png')";
 
@@ -195,13 +204,13 @@ class UIManager {
         });
 
         let section = document.getElementsByClassName("sectionNivel")[0];
-        let jugador;
+        let personaje;
 
         section.appendChild(tablaNivel);
         setTimeout(() => {
-            jugador = this.GenerarJugador(nivel);
+            personaje = this.GenerarJugador(nivel);
 
-            this.moverPersonaje(jugador, nivel, true);
+            this.moverPersonaje(personaje, nivel, true);
 
             let intervalo = setInterval(() => {
                 let SinPisar = document.getElementsByClassName("SinPisar");
@@ -216,23 +225,36 @@ class UIManager {
             }, 500);
         }, 500);
     }
-    moverPersonaje(personaje, nivel, primerMovimiento) {
+    async moverPersonaje(personaje, nivel, primerMovimiento) {
 
         let seguir = true;
+        let permitirMovimiento = true;
+        
+        document.addEventListener("keyup", e => 
+        {
+            permitirMovimiento = true;
+        });
 
-        document.addEventListener("keydown", e => {
-            if(seguir) {
+        document.addEventListener("keypress", e => {
+            if(seguir && permitirMovimiento) {
+                permitirMovimiento = false;
+                let destino;
                 let coord = personaje.coord;
+                let result;
                 switch (e.code) {
                     case ("KeyS"):
-                    case ("ArrowDown"):
-                        personaje.mover(coord[0] + 1, coord[1], nivel);
+                    // case ("ArrowDown"):
+                        result = nivel.comprobarColision(coord[0] + 1, coord[1]);
+                        personaje.mover(coord[0] + 1, coord[1], nivel)
+                        destino = nivel.Mapa[coord[0] + 1][coord[1]];
                         break;
 
                     case ("KeyW"):
-                    case ("ArrowUp"):
+                    // case ("ArrowUp"):
+                        result = nivel.comprobarColision(coord[0] - 1, coord[1]);
 
                         if (primerMovimiento) {
+                            personaje.cronometro(true);
                             nivel.Mapa[nivel.Mapa.length - 1][nivel.Mapa[nivel.Mapa.length - 1].indexOf(19)] = 22;
                             let entrada = document.getElementById(`coord:${nivel.Mapa.length - 1}-${nivel.Mapa[nivel.Mapa.length - 1].indexOf(22)}`);
                             entrada.src = nivel.getSrc(22);
@@ -241,57 +263,62 @@ class UIManager {
                             primerMovimiento = false;
                         }
                         
-                        personaje.mover(coord[0] - 1, coord[1], nivel);
+                        personaje.mover(coord[0] - 1, coord[1], nivel)
+                        destino = nivel.Mapa[coord[0] - 1][coord[1]];
                         break;
 
                     case ("KeyA"):
-                    case ("ArrowLeft"):
-                        personaje.mover(coord[0], coord[1] - 1, nivel);
+                    // case ("ArrowLeft"):
+                        result = nivel.comprobarColision(coord[0], coord[1] - 1);
+                        personaje.mover(coord[0], coord[1] - 1, nivel)
+                        destino = nivel.Mapa[coord[0]][coord[1] - 1];
                         break;
 
                     case ("KeyD"):
-                    case ("ArrowRight"):
-                        personaje.mover(coord[0], coord[1] + 1, nivel);
+                    // case ("ArrowRight"):
+                        result = nivel.comprobarColision(coord[0], coord[1] + 1);
+                        personaje.mover(coord[0], coord[1] + 1, nivel)
+                        destino = nivel.Mapa[coord[0]][coord[1] + 1];
                         break;
                 }
-                if(nivel.Mapa[coord[0]][coord[1]] == 21) {
-                    coord = [0,0];
-                    setTimeout(acabarNivel(jugador, true), 2000);
+                if(destino == 21) {
+                    //setTimeout(acabarNivel(personaje), 2000);
                     seguir = false;
+                    acabarNivel(personaje, true);
+                }
+                if(result == -1) {
+                    seguir = false;
+                    acabarNivel(personaje, false);
                 }
             }
-            this.sleep(50);
         });
     }
 
-    sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-
     printarRanking(data/* Nivel */) 
     {
-        // console.log(data);
-        // let main = document.getElementsByTagName("main")[0];
-        // main.className = "mainNiveles"
-        // main.innerHTML = "";
-        // this.printarBarraControl();
 
-        // let rankingH1 = document.createElement("h1");
-        // rankingH1.textContent = "RANKING";
-        // main.appendChild(rankingH1);
+        //document.getElementById("logo").style.display = "none";
+        console.log(data);
+        let main = document.getElementsByTagName("main")[0];
+        main.className = "mainNiveles"
+        main.innerHTML = "";
+        this.printarBarraControl();
 
-        // let section = document.createElement("section");
-        // section.className = "sectionRanking";
+        let rankingH1 = document.createElement("h1");
+        rankingH1.textContent = "RANKING";
+        main.appendChild(rankingH1);
 
-        // let divMapa = document.createElement("div");
-        // divMapa.id = "divMapa";
-        // section.appendChild(divMapa);
+        let section = document.createElement("section");
+        section.className = "sectionRanking";
 
-        // let divRanking = document.createElement("div");
-        // divRanking.id = "divRanking";
-        // section.appendChild(divRanking);
-        // main.appendChild(section);
+        let divMapa = document.createElement("div");
+        divMapa.id = "map";
+        section.appendChild(divMapa);
+
+        let divRanking = document.createElement("div");
+        divRanking.id = "divRanking";
+        section.appendChild(divRanking);
+        main.appendChild(section);
         
 
         window.open("MapaRanking.html");
@@ -312,15 +339,18 @@ class UIManager {
 
     printarFinalNivel()
     {
-        let section = document.getElementsByTagName("section")[0];
         let divFinal = document.createElement("div");
         divFinal.className = "divFinal";
         
         let h1 = document.createElement("h1");
         h1.textContent = "FIN";
+        divFinal.appendChild(h1);
+  
 
-
-
+        divFinal.style.position = "relative";
+        divFinal.style.top = 1600 + "px" ;
+        divFinal.style.left = 650 + "px";
+        document.body.appendChild(divFinal);
     }
 
     // printarSelectProvincia(array, ventana) {
