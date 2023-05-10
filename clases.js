@@ -43,39 +43,6 @@ class Nivel {
         if(destino.classList.contains("Colision")) return 0;
         if(destino.classList.contains("Pisado")) return -1;
         return 1;
-        /*
-        let fila = this.#Mapa[x];
-        let id = fila[y];
-
-        console.log(id);
-       
-        switch(id) {
-            case 7:
-            case 8:
-            case 9:
-            case 19:
-            case 21:
-                return true;
-    
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            case 15:
-            case 16:
-            case 17:
-            case 18:
-            case 20:
-            case 22:
-                return false;
-        }*/
     }
     comprobarTipo(id) {
     
@@ -135,18 +102,15 @@ class Personaje {
     velocidad;
     movimiento = false;
     tiempo = 0;
-    pararTiempo = false;
+    nivelActual;
+    pararTiempo;
 
     // Métodos
-    animacion(fila) {
-        // Cambia el SpriteActual pasando por toda la row seleccionada
-        // de una en una generando una animación
-    }
     
     // Movimiento con animación, depende de la velocidad del objeto y no se puede mover más de un bloque (para moverse más espacio usar "colocar()")
     async mover(x, y, nivel) {
 
-        if(this.movimiento) {console.log("No!");return;}
+        if(this.movimiento) return ;
 
         let direccion = "";
 
@@ -209,17 +173,32 @@ class Personaje {
         return false;
     }
     cronometro(empieza) {
-        if(!empieza) {
+        if(empieza) {
+            this.pararTiempo = false;
+            console.log("EMPIEZA TIEMPO");
+            let crono = setInterval(() => {
+                if(this.pararTiempo) {
+                    clearInterval(crono);
+                    return;
+                }
+                this.tiempo++;
+                console.log("contador: " + this.tiempo);
+                let contador = document.getElementsByClassName("contador")[0];
+                contador.textContent = this.tiempoString(this.tiempo);
+            }, 1000);
+        } else {
+            console.log("ACABA TIEMPO");
             this.pararTiempo = true;
-            console.log("ACABA TIEMPO" + this.tiempo);
-            return this.tiempo;
         }
-        console.log("EMPIEZA TIEMPO");
-        let crono = setInterval(() => {
-            this.tiempo++;
-            console.log(this.tiempo);
-            if(this.pararTiempo) clearInterval(crono);
-        }, 1000);
+    }
+
+    tiempoString(tiempo) {
+        if(tiempo < 60) {
+            if(tiempo < 10) return "00:0" + tiempo;
+            return "00:" + tiempo;
+        }
+        if(tiempo % 60 < 10) return Math.round(tiempo / 60) + ":0" + tiempo % 60;
+        return Math.round(tiempo / 60) + ":" + tiempo % 60;
     }
 
     sleep(ms) {
@@ -259,9 +238,6 @@ class Personaje {
         this.img.style.position = "absolute";
         this.img.style.top = 0 + (section.offsetHeight / 2) - (parent.offsetHeight / 2) + (this.distancia() / 2) + "px";
         this.img.style.left = 0 + (section.offsetWidth / 2) - (parent.offsetWidth / 2) + "px";
-        // this.img.style.position = "absolute";
-        // this.img.style.top = "0px";
-        // this.img.style.left = "0px";
 
         let nivelMapa = nivel.Mapa;
 
@@ -273,16 +249,19 @@ class Personaje {
         this.img.style.top = `${(this.distancia() * x) + parseInt(this.img.style.top.split("p")[0])}px`;
         this.img.style.left = `${(this.distancia() * y) + parseInt(this.img.style.left.split("p")[0])}px`;
     }
-
-    // Constructor
-    constructor(velocidad) {
+    
+    crearPersonaje()
+    {
         this.img = document.createElement("img");
         this.img.id = "jugador";
         this.img.src = this.sprites[1];
 
         document.getElementById("tablaNivel").appendChild(this.img);
+    }
 
-        this.velocidad = velocidad;
+    // Constructor
+    constructor() {
+        this.velocidad = 4;
     }
 }
 class Localizaciones {

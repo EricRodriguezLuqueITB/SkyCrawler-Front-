@@ -1,6 +1,6 @@
 h1 {
     font-size: 7em;
-    -webkit-text-stroke-width: 3px;
+    -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: #3e3c49;
     background: #E3E2ED;
     background: linear-gradient(to bottom, #ebe2ed 45%, rgb(132, 105, 135) 72%);
@@ -24,6 +24,10 @@ h1 {
     text-align: center;
     padding-left: 5px;
     padding-top: 15px;
+}
+
+.divNiveles button:hover {
+    width: 30%;
 }
 
 .sectionNiveles {

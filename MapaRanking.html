@@ -8,45 +8,60 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
         integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-        
-    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     <script defer src="Ranking.js"></script>
     <script defer src="MapaRanking.js"></script>
     <script src="dataManager.js"></script>
     <script src="UIManager.js"></script>
-   <link rel="stylesheet" href="styles/barraControl.css">
-   <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/barraControl.css">
+    <link rel="stylesheet" href="styles/style.css">
     <!-- <link rel="stylesheet" href="styles/ranking.css"> -->
 
 
 
     <title>Document</title>
     <style>
-        *{
-            border: 1px solid black;
-        }
+        * {}
 
-        main{
+        main {
             height: 95vh;
         }
-        .sectionRanking{
-            display: flex;
-        }
-        #map {
-            width:900px;
-            height: 600px;
-        }
-        #divRanking{
-            width: 500px;
-            height: 600px;
+
+        h1 {
+            font-size: 4em;
+            -webkit-text-stroke-width: 2px;
+            -webkit-text-stroke-color: #3e3c49;
+            background: #E3E2ED;
+            background: linear-gradient(to bottom, #ebe2ed 45%, rgb(132, 105, 135) 72%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
         }
 
+
+        .sectionRanking {
+            display: flex;
+            height: 75%;
+            width: 100%;
+        }
+
+        #map {
+            width: 50%;
+            height: 100%;
+        }
+
+        #divRanking {
+            width: 50%;
+            
+            background-color: rgba(72, 57, 97, 0.696);
+        }
     </style>
 </head>
 
 <body>
     <main class="mainRanking">
-    <!-- <h1>RANKING</h1>
+        <!-- <h1>RANKING</h1>
     <section class="sectionRanking">
         <div id="map"></div>
         <div id="divRanking"></div>

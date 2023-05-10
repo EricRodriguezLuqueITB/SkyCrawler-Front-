@@ -1,3 +1,6 @@
+*{
+    border: 1px black solid;
+}
 .sectionRanking{
     display: flex;
     flex-direction: wrap;

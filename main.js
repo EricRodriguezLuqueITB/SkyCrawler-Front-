@@ -10,12 +10,9 @@ let ventanaProvincia;
 
 document.getElementById("loginForm").addEventListener("submit", comprobarPeticion);
 document.getElementById("checkbox").addEventListener("click", cambiarFuncionalidad)
+document.getElementById("username").focus();
 
-function focusUsuario() {
-  document.getElementById("username").focus();
-  alert("Foco");
-}
-
+document.getElementById("logo").addEventListener("click", () => { window.location.href = "http://rolu.sytes.net:5567/SKYCRAWLER/juego/aboutus.html" }); 
 
 function cambiarFuncionalidad() {
   let checkbox = document.getElementById("checkbox");

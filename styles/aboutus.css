@@ -1,0 +1,73 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background-color: aqua;
+    background-image: url("http://rolu.sytes.net:5567/SKYCRAWLER/elementos/fondotitulo.png");
+    background-size: 110vw;
+}
+
+.aboutus {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    height: 80%;
+    justify-content: right;
+    align-items: flex-start;
+    position: absolute;
+
+    top: 17%;
+    left: 22%;
+}
+
+.cuadro {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    background-color: #221f3dd3;
+    border-radius: 15px;
+    height: 70%;
+    padding: 30px;
+    width: 60%;
+
+}
+
+p {
+    font-size: 2em;
+    text-shadow: 0.5px 0.5px 0px #dcccf4;
+    text-align: center;
+}
+
+p.creditos {
+    font-size: 4em;
+    color: #b38fed;
+    text-decoration: underline;
+}
+
+.titulo {
+    font-size: 2em;
+    color: #e1aaef;
+}
+
+.nombres {
+    color: #93d5dc;
+}
+
+img {
+    width: 5%;
+    border: solid black 1px;
+    border-radius: 50px;
+    padding: 2%;
+    margin-left: 1%;
+    background-color: #cbc1e5;
+    outline: 1px solid black;
+    outline-offset: -4px;
+}
+
+img:hover {
+    -webkit-filter: grayscale(1) invert(1);
+    filter: grayscale(1) invert(1);
+}

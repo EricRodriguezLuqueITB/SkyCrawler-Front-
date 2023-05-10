@@ -2,16 +2,41 @@
     height: 10%;
 }
 
-.barraControl img
-{
-    display: flex;
-    width: 3em;
-    background-color: none;
-}
-
 .barraControl button
 {
    margin-right: 2em;
    border: none;
-   background-color:none;
+   background-color: transparent;
+   width: 5%;
+   height: 100%;
+}
+
+.barraControl img
+{
+    display: flex;
+    width: 50%;
+    border: solid black 1px;
+    border-radius: 20px;
+    padding: 20%;
+    margin-left: 1%;
+    outline: 1px solid black;
+    outline-offset: -4px;
+
+}
+
+.barraControl img:hover {
+    -webkit-filter: grayscale(1) invert(1);
+    filter: grayscale(1) invert(1);
+}
+
+.barraControl .contador {
+    float: right;
+    margin-top:  10%;
+    margin-right: 10%;
+    font-size: 400%;
+}
+
+#bienvenida {
+    margin-left: 10%;
+    font-size: 200%;
 }

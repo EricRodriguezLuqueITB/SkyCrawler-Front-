@@ -1,5 +1,6 @@
 body {
   background-size: 110vw;
+  overflow: hidden;
 }
 
 
@@ -38,10 +39,11 @@ section{
 #logo {
   width: 15%;
   position:absolute;
-  right: 0;
-  top: 65%
+  right: 0%;
+  top: 70%;
 }
 
 #logo:hover {
   width: 16%;
 }
+

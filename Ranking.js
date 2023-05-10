@@ -1,5 +1,8 @@
 const UI = new UIManager(8);
+const cerebro = new DataManager();
 
+let conexionBase = 'http://rolu.sytes.net:7053/';
+let data;
 printarBarraControl();
 printarRanking();
 
@@ -25,7 +28,7 @@ function printarBarraControl(){
     if (main.className != "mainMenu") {
         let buttonBack = document.createElement("button");
         let imgBack = document.createElement("img");
-        imgBack.setAttribute("src", "https://static.vecteezy.com/system/resources/previews/000/365/868/original/left-vector-icon.jpg");
+        imgBack.setAttribute("src", "http://rolu.sytes.net:5567/SKYCRAWLER/elementos/volver.png");
         imgBack.setAttribute("alt", "Logout");
         buttonBack.appendChild(imgBack);
         buttonBack.addEventListener("click", irMenu)
@@ -39,11 +42,13 @@ function irMenu(){
     window.location.replace("menu.html");
 }
 
-function printarRanking(data/* Nivel */) 
+function printarRanking() 
 {
 
     document.getElementById("logo").style.display = "none";
-    console.log(data);
+
+    document.body.style.backgroundImage = "url('http://rolu.sytes.net:5567/SKYCRAWLER/elementos/fondotitulo.png')";
+
     let main = document.getElementsByTagName("main")[0];
     main.className = "mainNiveles"
     main.innerHTML = "";
@@ -66,25 +71,19 @@ function printarRanking(data/* Nivel */)
     main.appendChild(section);
 }
 
-conexionBase = 'http://rolu.sytes.net:7053/';
+CargarDatosRanking();
 
-let data;
-CargarDatos();
-
-async function CargarProvincias() {
-87
+async function CargarProvincias() 
+{
     let cerebro = new DataManager();
-    let datos = await cerebro.getLocalizaciones();
+    let datos = await cerebro.getInfo("ranking","");
     return datos;
 }
 
-async function CargarDatos() 
+async function CargarDatosRanking() 
 {
-    let provincias = await CargarProvincias();
-
-    const urlActual = new URL(window.location.href);
-    const datosCodificados = urlActual.searchParams.get("ranking_data");
-    data = JSON.parse(datosCodificados);   
+    let jugadores_rank = await CargarProvincias();
+    console.log(jugadores_rank);
 
 //     <table id="mi-tabla">
 //       <thead>

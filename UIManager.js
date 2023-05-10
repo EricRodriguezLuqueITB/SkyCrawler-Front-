@@ -22,17 +22,28 @@ class UIManager {
             window.location.replace('index.html');
         })
 
+        let bienvenida = document.createElement("h1");
+        bienvenida.id = "bienvenida";
+        bienvenida.textContent = localStorage.getItem("nombre_Jugador");
+        console.log(localStorage.getItem("nombre_Jugador"));
+
         divBarraControl.appendChild(buttonLogout);
+        divBarraControl.appendChild(bienvenida);
 
         // Condicional creacion flecha
         if (main.className != "mainMenu") {
             let buttonBack = document.createElement("button");
             let imgBack = document.createElement("img");
-            imgBack.setAttribute("src", "https://static.vecteezy.com/system/resources/previews/000/365/868/original/left-vector-icon.jpg");
+            imgBack.setAttribute("src", "http://rolu.sytes.net:5567/SKYCRAWLER/elementos/volver.png");
             imgBack.setAttribute("alt", "Logout");
             buttonBack.appendChild(imgBack);
-            if(main.className == "MainNivel") {
-                buttonBack.addEventListener("click", acabarNivel, jugador, true)
+            
+            if(main.className == "mainNivel") {
+                buttonBack.addEventListener("click", printarMenu)
+                let contador = document.createElement("p");
+                contador.className = "contador";
+                contador.textContent = "00:00";
+                divBarraControl.appendChild(contador);
             }
             else {
                 buttonBack.addEventListener("click", printarMenu)
@@ -57,7 +68,11 @@ class UIManager {
 
     printarMenu() {
 
-        document.getElementById("logo").style.display = "flex"; 
+        let logo = document.getElementById("logo");
+        logo.style.display = "flex";
+        // logo.setAttribute = ("onclick", "window.location.href = 'http://rolu.sytes.net:5567/SKYCRAWLER/juego/aboutus.html");
+        // logo.href = "http://rolu.sytes.net:5567/SKYCRAWLER/juego/aboutus.html";
+        logo.addEventListener("click", () => { window.location.href = "http://rolu.sytes.net:5567/SKYCRAWLER/juego/aboutus.html" }); 
 
         document.body.style.backgroundImage = "url('http://rolu.sytes.net:5567/SKYCRAWLER/elementos/fondotitulo.png')";
 
@@ -68,9 +83,9 @@ class UIManager {
         let section = document.createElement("section");
         section.className = "sectionMenu";
 
-        let logo = document.createElement("img");
-        logo.src = "http://rolu.sytes.net:5567/SKYCRAWLER/TituloJuego.png";
-        section.appendChild(logo);
+        let titulo = document.createElement("img");
+        titulo.src = "http://rolu.sytes.net:5567/SKYCRAWLER/TituloJuego.png";
+        section.appendChild(titulo);
 
         let divOptions = document.createElement("div");
         divOptions.className = "divOptions";
@@ -110,7 +125,7 @@ class UIManager {
         let divNiveles = document.createElement("div");
         divNiveles.className = "divNiveles";
 
-        for (let i = 0; i < this.NumNiveles; i++) {
+        for (let i = 0; i < this.NumNiveles -1; i++) {
             let buttonImg = document.createElement("button");
             buttonImg.setAttribute("id", "nivel" + (i + 1));
 
@@ -123,11 +138,7 @@ class UIManager {
                 buttonImg.classList.add("bloqueado")
             }
             else {
-                buttonImg.addEventListener("click", (event) => 
-                {
-                    this.printarNivel(niveles, event);
-
-                });
+                buttonImg.addEventListener("click", printarNivel);
                 buttonImg.textContent = (i + 1);
             }
             divNiveles.appendChild(buttonImg);
@@ -140,7 +151,7 @@ class UIManager {
         // los niveles por encima del nivelCompletado estarán bloqueados.
     }
 
-    printarNivel(niveles, event) {
+    printarNivel(niveles, event, personaje) {
 
         document.getElementById("logo").style.display = "none"; 
 
@@ -161,10 +172,12 @@ class UIManager {
         nivel.style.fontSize = "200%";
         section.appendChild(nivel);
         main.appendChild(section);
-        this.printarMapa(niveles[event.srcElement.textContent]);
+
+        this.printarMapa(niveles[event.srcElement.textContent], event.srcElement.textContent, personaje);
+        
     }
 
-    printarMapa(stringNivel) {
+    printarMapa(stringNivel, NumNivel, personaje) {
         // Mostrará por pantalla el escenario especificado en el Mapa del
         // nivel pasado por parametro.
         let pruebaNivel = stringNivel.mapa.split("/");
@@ -204,11 +217,12 @@ class UIManager {
         });
 
         let section = document.getElementsByClassName("sectionNivel")[0];
-        let personaje;
 
         section.appendChild(tablaNivel);
         setTimeout(() => {
-            personaje = this.GenerarJugador(nivel);
+            personaje.nivelActual = NumNivel;
+            personaje.crearPersonaje();
+            personaje.colocarInicial(nivel);
 
             this.moverPersonaje(personaje, nivel, true);
 
@@ -225,7 +239,7 @@ class UIManager {
             }, 500);
         }, 500);
     }
-    async moverPersonaje(personaje, nivel, primerMovimiento) {
+    moverPersonaje(personaje, nivel, primerMovimiento) {
 
         let seguir = true;
         let permitirMovimiento = true;
@@ -293,79 +307,31 @@ class UIManager {
             }
         });
     }
-
-    printarRanking(data/* Nivel */) 
-    {
-
-        //document.getElementById("logo").style.display = "none";
-        console.log(data);
-        let main = document.getElementsByTagName("main")[0];
-        main.className = "mainNiveles"
-        main.innerHTML = "";
-        this.printarBarraControl();
-
-        let rankingH1 = document.createElement("h1");
-        rankingH1.textContent = "RANKING";
-        main.appendChild(rankingH1);
-
-        let section = document.createElement("section");
-        section.className = "sectionRanking";
-
-        let divMapa = document.createElement("div");
-        divMapa.id = "map";
-        section.appendChild(divMapa);
-
-        let divRanking = document.createElement("div");
-        divRanking.id = "divRanking";
-        section.appendChild(divRanking);
-        main.appendChild(section);
-        
-
-        window.open("MapaRanking.html");
-    }
-    GenerarJugador(nivel /* Nivel */) {
-        // Muestra al personaje en la posición especificada del mismo encima
-        // del mapa y con el spriteActual especificado.
-
-        let personaje = new Personaje(4);
-        personaje.colocarInicial(nivel);
-        return personaje;
-    }
-    cambiarElemento(ObjetoViejo /* int[2] */, ObjetoNuevo /* int */) {
-        // Cambia el objeto en las coordenadas de ObjetoViejo por el elemento
-        // de de id (ObjetoNuevo).
-    }
-
-
-    printarFinalNivel()
+    
+    printarFinalNivel(bool)
     {
         let divFinal = document.createElement("div");
         divFinal.className = "divFinal";
-        
         let h1 = document.createElement("h1");
-        h1.textContent = "FIN";
+        let button1 = document.createElement("button");
+        let button2 = document.createElement("button");
+
+        if(bool == true)
+        {
+            h1.textContent = "VICTORIA";
+        }
+        else
+        {
+            h1.textContent = "DERROTA";
+        }
+
+        console.log(document.body.clientWidth);
+
         divFinal.appendChild(h1);
-  
-
-        divFinal.style.position = "relative";
-        divFinal.style.top = 1600 + "px" ;
-        divFinal.style.left = 650 + "px";
+        divFinal.style.position = "absolute";
+        divFinal.style.top = 300 + "px" ;
+        divFinal.style.left = 550 + "px";
         document.body.appendChild(divFinal);
+        
     }
-
-    // printarSelectProvincia(array, ventana) {
-    //     let form = ventana.document.getElementById("provinciaForm");
-    //     let select = ventana.document.getElementById("opciones");
-    //     for (let i = 0; i < array.length; i++) {
-    //         let option = document.createElement("option");
-    //         option.setAttribute("vaue", array[i].ciudad);
-    //         option.textContent = array[i].ciudad;
-    //         select.appendChild(option);
-    //     }
-    //     let button = document.createElement("button");
-    //     button.setAttribute("type", "buuton");
-    //     button.addEventListener("click", generarNuevoUsuario)
-    //     button.textContent = "Enviar";
-    //     form.appendChild(button);
-    // }
 }

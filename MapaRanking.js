@@ -1,6 +1,4 @@
-conexionBase = 'http://rolu.sytes.net:7053/';
-
-let data;
+let dataWat;
 CargarDatos();
 
 async function CargarProvincias() {
@@ -15,18 +13,18 @@ async function CargarDatos()
 
     const urlActual = new URL(window.location.href);
     const datosCodificados = urlActual.searchParams.get("ranking_data");
-    data = JSON.parse(datosCodificados);
-    console.log(data[0].ciudad);
+    dataWat = JSON.parse(datosCodificados);
+
     var map = L.map('map').setView([40.463667, -3.74922], 7);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 8,
+    maxZoom: 7,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);  
 
     
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < dataWat.length; i++) {
         for (let z= 0; z < provincias.length; z++) {
-            if(data[i].ciudad == provincias[z].ciudad){
+            if(dataWat[i].ciudad == provincias[z].ciudad){
                 var circle = L.circle([ provincias[z].latitud, provincias[z].longitud ], {
                         color: 'red',
                         fillColor: '#f03',
