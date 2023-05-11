@@ -198,6 +198,7 @@ class Personaje {
             return "00:" + tiempo;
         }
         if(tiempo % 60 < 10) return Math.round(tiempo / 60) + ":0" + tiempo % 60;
+        if(Math.round(tiempo / 60) < 10) return "0" + Math.round(tiempo / 60) + ":" + tiempo % 60;
         return Math.round(tiempo / 60) + ":" + tiempo % 60;
     }
 

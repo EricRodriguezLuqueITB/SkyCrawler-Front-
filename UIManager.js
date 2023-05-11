@@ -22,10 +22,9 @@ class UIManager {
             window.location.replace('index.html');
         })
 
-        let bienvenida = document.createElement("h1");
+        let bienvenida = document.createElement("h2");
         bienvenida.id = "bienvenida";
-        bienvenida.textContent = localStorage.getItem("nombre_Jugador");
-        console.log(localStorage.getItem("nombre_Jugador"));
+        bienvenida.textContent = "Usuario: "  + localStorage.getItem("nombre_Jugador");
 
         divBarraControl.appendChild(buttonLogout);
         divBarraControl.appendChild(bienvenida);
@@ -60,7 +59,7 @@ class UIManager {
             //     // }
             // })
 
-            divBarraControl.appendChild(buttonBack);
+            bienvenida.before(buttonBack);
         }
 
         main.appendChild(divBarraControl);
@@ -107,7 +106,7 @@ class UIManager {
     }
     printarNiveles(jugador, niveles) {
 
-        document.getElementById("logo").style.display = "block"; 
+        document.getElementById("logo").style.display = "none"; 
 
         document.body.style.backgroundImage = "url('http://rolu.sytes.net:5567/SKYCRAWLER/elementos/fondotitulo.png')";
 
@@ -125,7 +124,7 @@ class UIManager {
         let divNiveles = document.createElement("div");
         divNiveles.className = "divNiveles";
 
-        for (let i = 0; i < this.NumNiveles -1; i++) {
+        for (let i = 0; i < this.NumNiveles; i++) {
             let buttonImg = document.createElement("button");
             buttonImg.setAttribute("id", "nivel" + (i + 1));
 
@@ -135,7 +134,8 @@ class UIManager {
                 // img.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/345/345535.png?w=360")
                 // img.setAttribute("alt", "candado");
                 // buttonImg.appendChild(img);
-                buttonImg.classList.add("bloqueado")
+                buttonImg.classList.add("bloqueado");
+                buttonImg.style.filter = "brightness(25%) drop-shadow(5px 5px 1px rgb(44, 44, 44))";
             }
             else {
                 buttonImg.addEventListener("click", printarNivel);
@@ -143,6 +143,24 @@ class UIManager {
             }
             divNiveles.appendChild(buttonImg);
         }
+        // for (let i = 0; i < this.NumNiveles -1; i++) {
+        //     let buttonImg = document.createElement("img");
+        //     buttonImg.setAttribute("id", "nivel" + (i + 1));
+
+        //     if (jugador.NivelMaximo <= i) {
+        //         // let img = document.createElement("img");
+        //         // img.className = "candado";
+        //         // img.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/345/345535.png?w=360")
+        //         // img.setAttribute("alt", "candado");
+        //         // buttonImg.appendChild(img);
+        //         buttonImg.classList.add("bloqueado")
+        //     }
+        //     else {
+        //         buttonImg.addEventListener("click", printarNivel);
+        //         buttonImg.textContent = (i + 1);
+        //     }
+        //     divNiveles.appendChild(buttonImg);
+        // }
 
         section.appendChild(divNiveles);
         main.appendChild(section);
@@ -167,13 +185,12 @@ class UIManager {
         let section = document.createElement("section");
         section.className = "sectionNivel";
 
-        let nivel = document.createElement("h1");
-        nivel.textContent = "NIVEL " + event.srcElement.textContent;
-        nivel.style.fontSize = "200%";
+        let nivel = document.createElement("h3");
+        nivel.textContent = "Nivel " + event.srcElement.textContent;
         section.appendChild(nivel);
         main.appendChild(section);
 
-        this.printarMapa(niveles[event.srcElement.textContent], event.srcElement.textContent, personaje);
+        this.printarMapa(niveles[event.srcElement.textContent - 1], event.srcElement.textContent, personaje);
         
     }
 
@@ -195,6 +212,7 @@ class UIManager {
         }
 
         let nivel = new Nivel(nivelMapa);
+        console.log(nivel);
 
         let tablaNivel = document.createElement("table");
         tablaNivel.id = "tablaNivel";
@@ -308,30 +326,56 @@ class UIManager {
         });
     }
     
-    printarFinalNivel(bool)
+    printarFinalNivel(bool, nivel)
     {
+        console.log("Final print");
+        let main = document.getElementsByTagName("main")[0];
         let divFinal = document.createElement("div");
         divFinal.className = "divFinal";
+
+        let width = 600;
+        let height = 300;
+    
+        divFinal.style.width = width + "px";
+        divFinal.style.height = height + "px";
         let h1 = document.createElement("h1");
-        let button1 = document.createElement("button");
-        let button2 = document.createElement("button");
+        divFinal.appendChild(h1);
+        let button1 = document.createElement("p");
+        divFinal.appendChild(button1);
+        let button2 = document.createElement("p");
+        button2.textContent = "Volver a menu";
+        divFinal.appendChild(button2);
+
 
         if(bool == true)
         {
             h1.textContent = "VICTORIA";
+            button1.textContent = "Siguiente Nivel";
+            nivel++;
         }
         else
         {
             h1.textContent = "DERROTA";
+            button1.textContent = "Reintentar";
         }
 
-        console.log(document.body.clientWidth);
+        button1.addEventListener("click", function(){
+            button1.textContent = nivel;
+            printarNivel(event);
+        })
 
-        divFinal.appendChild(h1);
+        button2.addEventListener("click", function(){
+
+            printarMenu();
+        })
+
+
+
+
         divFinal.style.position = "absolute";
-        divFinal.style.top = 300 + "px" ;
-        divFinal.style.left = 550 + "px";
-        document.body.appendChild(divFinal);
+        divFinal.style.top =  main.clientHeight/2 - height/2 + "px";
+        divFinal.style.left =  main.clientWidth/2 - width/2 + "px";
+        main.appendChild(divFinal);
         
     }
 }

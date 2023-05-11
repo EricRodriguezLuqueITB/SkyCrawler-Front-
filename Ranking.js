@@ -3,6 +3,8 @@ const cerebro = new DataManager();
 
 let conexionBase = 'http://rolu.sytes.net:7053/';
 let data;
+let datosJugadoresRanking;
+let datosRankingNivel;
 printarBarraControl();
 printarRanking();
 
@@ -55,6 +57,7 @@ function printarRanking()
     this.printarBarraControl();
 
     let rankingH1 = document.createElement("h1");
+    rankingH1.id = "tituloRanking";
     rankingH1.textContent = "RANKING";
     main.appendChild(rankingH1);
 
@@ -72,48 +75,129 @@ function printarRanking()
 }
 
 CargarDatosRanking();
-
-async function CargarProvincias() 
+async function CargarDatosRanking() 
 {
     let cerebro = new DataManager();
     let datos = await cerebro.getInfo("ranking","");
-    return datos;
+    datosJugadoresRanking = datos;
+
+    datosRankingNivel = datosJugadoresRanking.filter(jugador => jugador.nivel_Guardado == 1).sort((primero, segundo) => {
+        if(primero.tiempo > segundo.tiempo) return 1;
+        if(primero.tiempo < segundo.tiempo) return -1;
+        return 0;
+    });
+    
+    crearSelectorNivel();
+    datosJugadorRanking();
 }
 
-async function CargarDatosRanking() 
-{
-    let jugadores_rank = await CargarProvincias();
-    console.log(jugadores_rank);
+function crearSelectorNivel() {
+    let selector = document.createElement("select");
+    selector.addEventListener("change",cambiarRankingNivel);
+    // selector.onchange = "cambiarRankingNivel";
+    selector.id = "selectorNivel";
+    let dive = document.getElementById("divRanking")
 
-//     <table id="mi-tabla">
-//       <thead>
-//         <tr>
-//           <th>NombreJugador</th>
-//           <th>Nivel</th>
-//           <th>Tiempo</th>
-//         </tr>
-//       </thead>
-//       <tbody>
-//       </tbody>
-//     </table>
+    for (let index = 1; index < 9; index++) {
+        let optionNivel = document.createElement("option");
+        optionNivel.value = index;
+        optionNivel.textContent = "Nivel " + index;
+        selector.appendChild(optionNivel);
+    }
 
-// <script>
-// // Obtener la referencia a la tabla
-// const tabla = document.querySelector('#mi-tabla tbody');
-
-// // Función para agregar una nueva fila a la tabla con los valores pasados como argumentos
-// function agregarFila(nombreJugador, nivel, tiempo) {
-//   // Crear una nueva fila con los valores pasados
-//   const fila = document.createElement('tr');
-//   for (let i = 0; i< data.length; i++) {
-//   fila.innerHTML = `
-//     <td>${data[i].nombre_Jugador}</td>
-//     <td>${data[i].nivel}</td>
-//     <td>${data[i].tiempo}</td>
-//   `;
-//   }
-//   // Agregar la nueva fila a la tabla
-//   tabla.appendChild(fila);
-// }
-// </script>
+    dive.appendChild(selector)
+    
 }
+
+function cambiarRankingNivel() {
+    document.getElementsByTagName("table")[0].remove();
+
+    let nivel = document.getElementById("selectorNivel").value;
+    datosRankingNivel = datosJugadoresRanking.filter(jugador => jugador.nivel_Guardado == nivel).sort((primero, segundo) => {
+        if(primero.tiempo > segundo.tiempo) return 1;
+        if(primero.tiempo < segundo.tiempo) return -1;
+        return 0;
+    });
+    datosJugadorRanking();
+}
+
+function datosJugadorRanking(){
+
+    let tabla = document.createElement("table");
+
+    let tr = document.createElement("tr");
+    let th = document.createElement("th");
+    let thText = document.createTextNode("Nº");
+    th.appendChild(thText);
+    tr.appendChild(th);
+
+    th = document.createElement("th");
+    thText = document.createTextNode("Nombre");
+    th.appendChild(thText);
+    tr.appendChild(th);
+
+    th = document.createElement("th");
+    thText = document.createTextNode("Nivel");
+    th.appendChild(thText);
+    tr.appendChild(th);
+ 
+    th = document.createElement("th");
+    thText = document.createTextNode("Tiempo");
+    th.appendChild(thText);
+    tr.appendChild(th);
+
+    th = document.createElement("th");
+    thText = document.createTextNode("Ciudad");
+    th.appendChild(thText);
+    tr.appendChild(th);
+
+
+    tabla.appendChild(tr)
+
+    tr = document.createElement("tr");
+    for (let i = 0; i < datosRankingNivel.length && i < 30; i++) {
+        
+        tr = document.createElement("tr");
+
+        td = document.createElement("td");
+        tdText = document.createTextNode(i + 1);
+        td.appendChild(tdText);
+        tr.appendChild(td);
+
+        td = document.createElement("td");
+        tdText = document.createTextNode(datosRankingNivel[i].nombre_Jugador);
+        td.appendChild(tdText);
+        tr.appendChild(td);
+    
+        td = document.createElement("td");
+        tdText = document.createTextNode(datosRankingNivel[i].nivel_Guardado);
+        td.appendChild(tdText);
+        tr.appendChild(td);
+    
+        td = document.createElement("td");
+        tdText = document.createTextNode(tiempoString(datosRankingNivel[i].tiempo));
+        td.appendChild(tdText);
+        tr.appendChild(td);
+
+        td = document.createElement("td");
+        td.style.borderRight = "1px black";
+        tdText = document.createTextNode(datosRankingNivel[i].ciudad);
+        td.appendChild(tdText);
+        tr.appendChild(td);
+        tabla.appendChild(tr);
+    }
+    let dive = document.getElementById("divRanking")
+
+    dive.appendChild(tabla)
+ 
+}
+
+function tiempoString(tiempo) {
+     if(tiempo < 60) {
+         if(tiempo < 10) return "00:0" + tiempo;
+         return "00:" + tiempo;
+     }
+     if(tiempo % 60 < 10) return Math.round(tiempo / 60) + ":0" + tiempo % 60;
+     if(Math.round(tiempo / 60) < 10) return "0" + Math.round(tiempo / 60) + ":" + tiempo % 60;
+     return Math.round(tiempo / 60) + ":" + tiempo % 60;
+ }

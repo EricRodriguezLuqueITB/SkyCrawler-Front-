@@ -2,7 +2,7 @@
 
 const cerebro = new DataManager();
 const UI = new UIManager(4);
-const conexionBase = 'http://rolu.sytes.net:7053/';
+const conexionBase = 'https://skycrawler.azurewebsites.net/';
 let ventanaProvincia;
 //http://rolu.sytes.net:7053/swagger/index.html
 //http://rolu.sytes.net:5567/SKYCRAWLER/

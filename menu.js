@@ -1,5 +1,5 @@
 const cerebro = new DataManager();
-const conexionBase = 'http://rolu.sytes.net:7053/';
+const conexionBase = 'https://skycrawler.azurewebsites.net/';
 let UI;
 
 var nombre_Jugador = localStorage.getItem("nombre_Jugador");
@@ -18,6 +18,12 @@ async function CargarDatos()
 {
     jugador_Data = await cerebro.getInfo("jugador", nombre_Jugador);
     niveles = await cerebro.getInfo("nivel", "");
+    niveles = niveles.sort((primero, segundo) => {
+        if(primero.id_Nivel > segundo.id_Nivel) return 1;
+        if(primero.id_Nivel < segundo.id_Nivel) return -1;
+        return 0;
+    })
+    console.log(niveles);
     nivelesCopia = niveles;
     recursos = await cerebro.getInfo("elemento", "");
 
@@ -33,9 +39,9 @@ function CargarNiveles()
 
 async function acabarNivel(personaje, victoria) 
 {
+    personaje.cronometro(false);
     if(victoria)
     {
-        personaje.cronometro(false);
         if(personaje.nivelActual >= usuario.NivelMaximo)
         {
             console.log(usuario.Nombre);
@@ -44,31 +50,22 @@ async function acabarNivel(personaje, victoria)
             await cerebro.updateJugador(usuario.Nombre, usuario.NivelMaximo);
             delete personaje;
         }
-        else
-        {
-
-        }
-        await cerebro.insertPuntuacion(usuario.Nombre, personaje.tiempo, usuario.NivelMaximo, usuario.Ciudad);
+        await cerebro.insertPuntuacion(usuario.Nombre, personaje.tiempo, personaje.nivelActual, usuario.Ciudad);
     }
     //UI.printarFinalNivel(victoria);
     console.log("End ------ Victoria: " + victoria);
     // Manda los datos al ranking si victoria = true
     //
-
-    // Actualizar Nivel Actual del jugador
-    
-    // Reseteamos los niveles
     this.CargarNiveles();
+    UI.printarFinalNivel(victoria,personaje.nivelActual);
 
-    // // Printa el menú
-    // this.printarNiveles();
 }
 
 async function cargarRanking() {
     let rankingData = await cerebro.getInfo("ranking", "")
     console.log(rankingData);
 
-    window.open("MapaRanking.html?ranking_data="+ JSON.stringify(rankingData));
+    window.open("MapaRanking.html");
     //UI.printarRanking(ranking_Data);
 }
 
@@ -80,6 +77,7 @@ function printarMenu()
 }
 
 function printarNivel(event) {
+
     UI.printarNivel(niveles, event, personaje);
 }
 

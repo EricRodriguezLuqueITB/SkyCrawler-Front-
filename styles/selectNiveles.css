@@ -12,22 +12,24 @@ h1 {
 
 .divNiveles button {
     width: 20%;
-    height: 30%;
+    height: 40%;
     border: transparent;
     background: transparent;
     background-image: url("http://rolu.sytes.net:5567/SKYCRAWLER/elementos/cloudicon.png");
-    background-size: 60%;
+    background-size: 70%;
     background-repeat: no-repeat;
     background-position: center;
     font-size: 3em;
     color: #7c73ad;
     text-align: center;
     padding-left: 5px;
-    padding-top: 15px;
+    padding-top: 20px;
+    margin: 1%;
+    filter: drop-shadow(5px 5px 1px rgb(104, 104, 104));
 }
 
-.divNiveles button:hover {
-    width: 30%;
+.divNiveles button:not(.bloqueado):hover {
+    background-size: 75%;
 }
 
 .sectionNiveles {
@@ -38,9 +40,8 @@ h1 {
     background: transparent;
     border-color: transparent;
     border-radius: 20px;
-    background-color: rgba(185, 179, 220, 0.534);
-    backdrop-filter: blur(50px);
-
+    background-color: rgba(173, 168, 206, 0.537);
+    backdrop-filter: blur(10px);
 }
 
 .divNiveles {

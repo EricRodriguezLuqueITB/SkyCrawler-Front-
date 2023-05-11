@@ -7,15 +7,23 @@ async function CargarProvincias() {
     let datos = await cerebro.getLocalizaciones();
     return datos;
 }
+async function CargarDatosRanking() 
+{
+    let cerebro = new DataManager();
+    let datos = await cerebro.getInfo("ranking","");
+    return datos
+
+}
 async function CargarDatos() 
 {
     let provincias = await CargarProvincias();
 
-    const urlActual = new URL(window.location.href);
-    const datosCodificados = urlActual.searchParams.get("ranking_data");
-    dataWat = JSON.parse(datosCodificados);
+    // const urlActual = new URL(window.location.href);
+    // const datosCodificados = urlActual.searchParams.get("ranking_data");
+    // dataWat = JSON.parse(datosCodificados);
+    dataWat = await CargarDatosRanking();
 
-    var map = L.map('map').setView([40.463667, -3.74922], 7);
+    var map = L.map('map').setView([40.463667, -3.74922], 8);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 7,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -44,8 +52,5 @@ async function CargarDatos()
                     // L.marker([provincias[z].latitud, provincias[z].longitud ], {icon: greenIcon}).addTo(map);
             }
         }
-    }
-
-
-    
+    }  
 }
