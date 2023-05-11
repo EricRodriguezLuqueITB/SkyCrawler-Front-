@@ -16,15 +16,14 @@ class UIManager {
         imgLogout.setAttribute("alt", "Logout");
         imgLogout.style.background = "transparent";
         buttonLogout.appendChild(imgLogout);
-        buttonLogout.addEventListener("click", function () 
-        {
+        buttonLogout.addEventListener("click", function () {
             localStorage.removeItem("nombre_Jugador");
             window.location.replace('index.html');
         })
 
         let bienvenida = document.createElement("h2");
         bienvenida.id = "bienvenida";
-        bienvenida.textContent = "Usuario: "  + localStorage.getItem("nombre_Jugador");
+        bienvenida.textContent = "Usuario: " + localStorage.getItem("nombre_Jugador");
 
         divBarraControl.appendChild(buttonLogout);
         divBarraControl.appendChild(bienvenida);
@@ -36,8 +35,8 @@ class UIManager {
             imgBack.setAttribute("src", "http://rolu.sytes.net:5567/SKYCRAWLER/elementos/volver.png");
             imgBack.setAttribute("alt", "Logout");
             buttonBack.appendChild(imgBack);
-            
-            if(main.className == "mainNivel") {
+
+            if (main.className == "mainNivel") {
                 buttonBack.addEventListener("click", printarMenu)
                 let contador = document.createElement("p");
                 contador.className = "contador";
@@ -47,18 +46,6 @@ class UIManager {
             else {
                 buttonBack.addEventListener("click", printarMenu)
             }
-            // {
-            //     // switch(document.getElementsByTagName("Main")[0].className)
-            //     // {
-            //     //     case "mainRanking":
-            //     //         this.printarMenu();
-            //     //         break;
-            //     //     case "mainNiveles":
-            //     //         this.printarMenu();
-            //     //         break;
-            //     // }
-            // })
-
             bienvenida.before(buttonBack);
         }
 
@@ -69,9 +56,7 @@ class UIManager {
 
         let logo = document.getElementById("logo");
         logo.style.display = "flex";
-        // logo.setAttribute = ("onclick", "window.location.href = 'http://rolu.sytes.net:5567/SKYCRAWLER/juego/aboutus.html");
-        // logo.href = "http://rolu.sytes.net:5567/SKYCRAWLER/juego/aboutus.html";
-        logo.addEventListener("click", () => { window.location.href = "http://rolu.sytes.net:5567/SKYCRAWLER/juego/aboutus.html" }); 
+        logo.addEventListener("click", () => { window.location.href = "http://rolu.sytes.net:5567/SKYCRAWLER/juego/aboutus.html" });
 
         document.body.style.backgroundImage = "url('http://rolu.sytes.net:5567/SKYCRAWLER/elementos/fondotitulo.png')";
 
@@ -106,7 +91,7 @@ class UIManager {
     }
     printarNiveles(jugador, niveles) {
 
-        document.getElementById("logo").style.display = "none"; 
+        document.getElementById("logo").style.display = "none";
 
         document.body.style.backgroundImage = "url('http://rolu.sytes.net:5567/SKYCRAWLER/elementos/fondotitulo.png')";
 
@@ -129,11 +114,6 @@ class UIManager {
             buttonImg.setAttribute("id", "nivel" + (i + 1));
 
             if (jugador.NivelMaximo <= i) {
-                // let img = document.createElement("img");
-                // img.className = "candado";
-                // img.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/345/345535.png?w=360")
-                // img.setAttribute("alt", "candado");
-                // buttonImg.appendChild(img);
                 buttonImg.classList.add("bloqueado");
                 buttonImg.style.filter = "brightness(25%) drop-shadow(5px 5px 1px rgb(44, 44, 44))";
             }
@@ -143,25 +123,6 @@ class UIManager {
             }
             divNiveles.appendChild(buttonImg);
         }
-        // for (let i = 0; i < this.NumNiveles -1; i++) {
-        //     let buttonImg = document.createElement("img");
-        //     buttonImg.setAttribute("id", "nivel" + (i + 1));
-
-        //     if (jugador.NivelMaximo <= i) {
-        //         // let img = document.createElement("img");
-        //         // img.className = "candado";
-        //         // img.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/345/345535.png?w=360")
-        //         // img.setAttribute("alt", "candado");
-        //         // buttonImg.appendChild(img);
-        //         buttonImg.classList.add("bloqueado")
-        //     }
-        //     else {
-        //         buttonImg.addEventListener("click", printarNivel);
-        //         buttonImg.textContent = (i + 1);
-        //     }
-        //     divNiveles.appendChild(buttonImg);
-        // }
-
         section.appendChild(divNiveles);
         main.appendChild(section);
 
@@ -171,7 +132,7 @@ class UIManager {
 
     printarNivel(niveles, event, personaje) {
 
-        document.getElementById("logo").style.display = "none"; 
+        document.getElementById("logo").style.display = "none";
 
         document.body.style.backgroundImage = "url('http://rolu.sytes.net:5567/SKYCRAWLER/elementos/fondojuego.png')";
 
@@ -179,8 +140,6 @@ class UIManager {
         main.innerHTML = "";
         main.className = "mainNivel"
         this.printarBarraControl();
-
-
 
         let section = document.createElement("section");
         section.className = "sectionNivel";
@@ -190,15 +149,25 @@ class UIManager {
         section.appendChild(nivel);
         main.appendChild(section);
 
+        if(event.srcElement.textContent == 1) {
+            let controlesDiv = document.createElement("div");
+            controlesDiv.className = "controlesDiv";
+
+            let controles = document.createElement("img");
+            controles.src = "http://rolu.sytes.net:5567/SKYCRAWLER/elementos/controles.png";
+            controles.className = "controles";
+            controlesDiv.appendChild(controles);
+            main.appendChild(controlesDiv);
+        }
+
         this.printarMapa(niveles[event.srcElement.textContent - 1], event.srcElement.textContent, personaje);
-        
+
     }
 
     printarMapa(stringNivel, NumNivel, personaje) {
         // Mostrará por pantalla el escenario especificado en el Mapa del
         // nivel pasado por parametro.
         let pruebaNivel = stringNivel.mapa.split("/");
-
         let nivelMapa = [pruebaNivel.length];
 
         for (let i = 0; i < pruebaNivel.length; i++) {
@@ -212,7 +181,7 @@ class UIManager {
         }
 
         let nivel = new Nivel(nivelMapa);
-        console.log(nivel);
+
 
         let tablaNivel = document.createElement("table");
         tablaNivel.id = "tablaNivel";
@@ -247,42 +216,57 @@ class UIManager {
             let intervalo = setInterval(() => {
                 let SinPisar = document.getElementsByClassName("SinPisar");
                 if (SinPisar.length == 1) { //Dejo la entrada y la salida
+
+                    console.log(nivel.Mapa[0]);
                     nivel.Mapa[0][nivel.Mapa[0].indexOf(20)] = 21;
+
+                    console.log(nivel.Mapa[0]);
+                    
+
                     let salida = document.getElementById(`coord:0-${nivel.Mapa[0].indexOf(21)}`);
                     salida.src = nivel.getSrc(21);
                     salida.classList.add("SinPisar");
                     salida.classList.remove("Colision");
                     clearInterval(intervalo);
                 }
-            }, 500);
-        }, 500);
+                if(document.getElementsByClassName("mainNivel")[0] == undefined)
+                {
+                    clearInterval(intervalo);
+                }
+            }, 60);
+        }, 300);
     }
+
     moverPersonaje(personaje, nivel, primerMovimiento) {
 
         let seguir = true;
         let permitirMovimiento = true;
-        
-        document.addEventListener("keyup", e => 
-        {
-            permitirMovimiento = true;
-        });
+
+        let parar = setInterval(() => {
+            if(document.getElementsByClassName("mainNivel")[0] == undefined)
+            {
+
+                seguir = false;
+                clearInterval(parar);
+            }
+        }, 50);
 
         document.addEventListener("keypress", e => {
-            if(seguir && permitirMovimiento) {
+            if (seguir && permitirMovimiento) {
                 permitirMovimiento = false;
                 let destino;
                 let coord = personaje.coord;
                 let result;
                 switch (e.code) {
                     case ("KeyS"):
-                    // case ("ArrowDown"):
+                        // case ("ArrowDown"):
                         result = nivel.comprobarColision(coord[0] + 1, coord[1]);
-                        personaje.mover(coord[0] + 1, coord[1], nivel)
                         destino = nivel.Mapa[coord[0] + 1][coord[1]];
+                        personaje.mover(coord[0] + 1, coord[1], nivel);
                         break;
 
                     case ("KeyW"):
-                    // case ("ArrowUp"):
+                        // case ("ArrowUp"):
                         result = nivel.comprobarColision(coord[0] - 1, coord[1]);
 
                         if (primerMovimiento) {
@@ -294,40 +278,42 @@ class UIManager {
                             entrada.classList.remove("SinPisar");
                             primerMovimiento = false;
                         }
-                        
-                        personaje.mover(coord[0] - 1, coord[1], nivel)
                         destino = nivel.Mapa[coord[0] - 1][coord[1]];
+                        personaje.mover(coord[0] - 1, coord[1], nivel);
                         break;
 
                     case ("KeyA"):
-                    // case ("ArrowLeft"):
+                        // case ("ArrowLeft"):
                         result = nivel.comprobarColision(coord[0], coord[1] - 1);
-                        personaje.mover(coord[0], coord[1] - 1, nivel)
                         destino = nivel.Mapa[coord[0]][coord[1] - 1];
+                        personaje.mover(coord[0], coord[1] - 1, nivel);
                         break;
 
                     case ("KeyD"):
-                    // case ("ArrowRight"):
+                        // case ("ArrowRight"):
                         result = nivel.comprobarColision(coord[0], coord[1] + 1);
-                        personaje.mover(coord[0], coord[1] + 1, nivel)
                         destino = nivel.Mapa[coord[0]][coord[1] + 1];
+                        personaje.mover(coord[0], coord[1] + 1, nivel);
                         break;
                 }
-                if(destino == 21) {
+                if (destino == 21) {
                     //setTimeout(acabarNivel(personaje), 2000);
                     seguir = false;
                     acabarNivel(personaje, true);
                 }
-                if(result == -1) {
+                if (result == -1) {
                     seguir = false;
                     acabarNivel(personaje, false);
                 }
             }
         });
+
+        document.addEventListener("keyup", e => {
+            permitirMovimiento = true;
+        });
     }
-    
-    printarFinalNivel(bool, nivel)
-    {
+
+    printarFinalNivel(bool, nivel) {
         console.log("Final print");
         let main = document.getElementsByTagName("main")[0];
         let divFinal = document.createElement("div");
@@ -335,47 +321,58 @@ class UIManager {
 
         let width = 600;
         let height = 300;
-    
+
         divFinal.style.width = width + "px";
         divFinal.style.height = height + "px";
-        let h1 = document.createElement("h1");
-        divFinal.appendChild(h1);
-        let button1 = document.createElement("p");
-        divFinal.appendChild(button1);
+        let h4 = document.createElement("h4");
+        divFinal.appendChild(h4);
+
         let button2 = document.createElement("p");
-        button2.textContent = "Volver a menu";
-        divFinal.appendChild(button2);
+        button2.textContent = "Volver a menú";
 
-
-        if(bool == true)
-        {
-            h1.textContent = "VICTORIA";
-            button1.textContent = "Siguiente Nivel";
+        console.log(nivel);
+        if (bool == true) {
+            h4.textContent = "VICTORIA";
             nivel++;
         }
-        else
-        {
-            h1.textContent = "DERROTA";
-            button1.textContent = "Reintentar";
+        else {
+            h4.textContent = "DERROTA";
         }
 
-        button1.addEventListener("click", function(){
-            button1.textContent = nivel;
-            printarNivel(event);
+        if (nivel - 1 != 8)
+        {
+            let button1 = document.createElement("p");
+            divFinal.appendChild(button1);
+
+            if (bool == true) {
+                button1.textContent = "Siguiente nivel";
+            }
+            else {
+                button1.textContent = "Reintentar";
+            }
+
+            button1.addEventListener("click", function () {
+                button1.textContent = nivel;
+                personaje.time = 0;
+                CargarNiveles();
+                printarNivel(event);
+            })
+        }
+        divFinal.appendChild(button2);
+        button2.addEventListener("click", ()=>{
+
+            printarNiveles();
         })
 
-        button2.addEventListener("click", function(){
+        //         button2.addEventListener("click", function(){
 
-            printarMenu();
-        })
-
-
-
+        //             printarMenu();
+        //  })
 
         divFinal.style.position = "absolute";
-        divFinal.style.top =  main.clientHeight/2 - height/2 + "px";
-        divFinal.style.left =  main.clientWidth/2 - width/2 + "px";
+        divFinal.style.top = main.clientHeight / 2 - height / 2 + "px";
+        divFinal.style.left = main.clientWidth / 2 - width / 2 + "px";
         main.appendChild(divFinal);
-        
+
     }
 }

@@ -108,7 +108,7 @@ class Personaje {
     // Métodos
     
     // Movimiento con animación, depende de la velocidad del objeto y no se puede mover más de un bloque (para moverse más espacio usar "colocar()")
-    async mover(x, y, nivel) {
+    mover(x, y, nivel) {
 
         if(this.movimiento) return ;
 
@@ -142,52 +142,49 @@ class Personaje {
             this.coord = [x, y];
 
             this.movimiento = true;
-            let total = 0;
 
-            while(this.movimiento) {
-                if (total >= this.distancia()) {
-                    this.movimiento = false;
-                } else {
-                    switch(direccion) {
-                        case "Abajo":
-                            this.img.style.top = (parseInt(this.img.style.top.split("p")[0]) + this.velocidad) + 'px';
-                        break;
-        
-                        case "Arriba":
-                            this.img.style.top = (parseInt(this.img.style.top.split("p")[0]) - this.velocidad) + 'px';
-                        break;
-                        
-                        case "Derecha":
-                            this.img.style.left = (parseInt(this.img.style.left.split("p")[0]) + this.velocidad) + 'px';
-                        break;
-                        
-                        case "Izquierda":
-                            this.img.style.left = (parseInt(this.img.style.left.split("p")[0]) - this.velocidad) + 'px';
-                        break;
-                    }
-                }
-                total += this.velocidad;
-                await this.sleep(10);
-            }
+            this.movimiento = this.animacion(0, direccion, this.img, this.velocidad, this.distancia());
         }
-        return false;
     }
-    cronometro(empieza) {
+
+    animacion(total, direccion, img, velocidad, distancia) {
+      
+        switch(direccion) {
+          case "Abajo":
+            img.style.top = (parseInt(img.style.top.split("p")[0]) + velocidad) + 'px';
+            break;
+          case "Arriba":
+            img.style.top = (parseInt(img.style.top.split("p")[0]) - velocidad) + 'px';
+            break;
+          case "Derecha":
+            img.style.left = (parseInt(img.style.left.split("p")[0]) + velocidad) + 'px';
+            break;
+          case "Izquierda":
+            img.style.left = (parseInt(img.style.left.split("p")[0]) - velocidad) + 'px';
+            break;
+        }
+      
+        if (total >= distancia) {
+          return false;
+        } else {
+          setTimeout(this.animacion.bind(this), 10, total + velocidad, direccion, img, velocidad, distancia);
+        }
+      }
+
+    cronometro(empieza) 
+    {
         if(empieza) {
             this.pararTiempo = false;
-            console.log("EMPIEZA TIEMPO");
             let crono = setInterval(() => {
                 if(this.pararTiempo) {
                     clearInterval(crono);
                     return;
                 }
                 this.tiempo++;
-                console.log("contador: " + this.tiempo);
                 let contador = document.getElementsByClassName("contador")[0];
                 contador.textContent = this.tiempoString(this.tiempo);
             }, 1000);
         } else {
-            console.log("ACABA TIEMPO");
             this.pararTiempo = true;
         }
     }

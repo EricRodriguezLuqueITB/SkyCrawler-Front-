@@ -5,6 +5,7 @@ let conexionBase = 'http://rolu.sytes.net:7053/';
 let data;
 let datosJugadoresRanking;
 let datosRankingNivel;
+var nombre_Jugador = localStorage.getItem("nombre_Jugador");
 printarBarraControl();
 printarRanking();
 
@@ -58,7 +59,7 @@ function printarRanking()
 
     let rankingH1 = document.createElement("h1");
     rankingH1.id = "tituloRanking";
-    rankingH1.textContent = "RANKING";
+    rankingH1.textContent = "Ranking";
     main.appendChild(rankingH1);
 
     let section = document.createElement("section");
@@ -135,11 +136,6 @@ function datosJugadorRanking(){
     thText = document.createTextNode("Nombre");
     th.appendChild(thText);
     tr.appendChild(th);
-
-    th = document.createElement("th");
-    thText = document.createTextNode("Nivel");
-    th.appendChild(thText);
-    tr.appendChild(th);
  
     th = document.createElement("th");
     thText = document.createTextNode("Tiempo");
@@ -155,8 +151,11 @@ function datosJugadorRanking(){
     tabla.appendChild(tr)
 
     tr = document.createElement("tr");
-    for (let i = 0; i < datosRankingNivel.length && i < 30; i++) {
+    for (let i = 0; i < datosRankingNivel.length && i < 15; i++) {
         
+        let tdText;
+        let td;
+
         tr = document.createElement("tr");
 
         td = document.createElement("td");
@@ -170,11 +169,6 @@ function datosJugadorRanking(){
         tr.appendChild(td);
     
         td = document.createElement("td");
-        tdText = document.createTextNode(datosRankingNivel[i].nivel_Guardado);
-        td.appendChild(tdText);
-        tr.appendChild(td);
-    
-        td = document.createElement("td");
         tdText = document.createTextNode(tiempoString(datosRankingNivel[i].tiempo));
         td.appendChild(tdText);
         tr.appendChild(td);
@@ -184,12 +178,38 @@ function datosJugadorRanking(){
         tdText = document.createTextNode(datosRankingNivel[i].ciudad);
         td.appendChild(tdText);
         tr.appendChild(td);
+
+        if(nombre_Jugador == "admin")
+        {
+            td = document.createElement("td");
+            td.style.borderRight = "1px black";
+            tdText = document.createTextNode("X");
+            td.appendChild(tdText);
+            td.addEventListener("click",()=>
+            {
+                eliminarJugadorRanking(datosRankingNivel[i].nombre_Jugador,datosRankingNivel[i].tiempo,datosRankingNivel[i].nivel_Guardado);
+                document.getElementsByTagName("table")[0].remove();
+                datosJugadorRanking();
+
+            })
+            tr.appendChild(td);
+        }
         tabla.appendChild(tr);
     }
-    let dive = document.getElementById("divRanking")
+    let dive = document.getElementById("divRanking");
 
-    dive.appendChild(tabla)
+    dive.appendChild(tabla);
  
+}
+
+async function eliminarJugadorRanking(nombre_Jugador, tiempo, nivel_Guardado)
+{
+    await fetch(conexionBase + 'api/ranking/' + nombre_Jugador + "," + tiempo + "," + nivel_Guardado,{
+        method: 'DELETE'
+      })
+      .then(response => response.json())
+      .then(data =>window.location.reload())
+      .catch(error => console.error(error))
 }
 
 function tiempoString(tiempo) {

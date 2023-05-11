@@ -29,16 +29,42 @@ table .mapa {
 }
 
 .divFinal{
-    background-color: red;
+    z-index: 20;
+    background-color: #4a428ae4;
     display:flex;
     align-items: center;
     flex-direction: column;
     justify-content: space-around;
 
 }
+
+.divFinal h4 {
+
+    font-size: 7em;
+
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: #3e3c49;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    text-shadow: 0px 0px 1px #d9ccf3, 2px 1px 1px #4a3f4c;
+}
+
 .divFinal p{
-    width: 3em;
-    height:2em;
+    font-size: 2em;
+    width: 40%;
+    height:20%;
+    text-align: center;
+
+    color: #d9ccf3;
+    text-shadow: 0px 0px 1px #d9ccf3, 2px 1px 1px #4a3f4c;
+
+}
+
+.divFinal p:hover {
+    color: #b2eef0;
+    text-shadow: 0px 0px 1px #b2eef0, 2px 1px 1px #4a3f4c;
 }
 
 @-webkit-keyframes oscurecer {
@@ -47,6 +73,7 @@ table .mapa {
 }
 
 h3 {
+    z-index: 10;
     font-family: sans-serif;
     font-size: 10em;
     text-align: center;
@@ -56,7 +83,6 @@ h3 {
     right: 10%;
     font-size: 400%;
 
-    
     -webkit-text-stroke-width: 2.5px;
     -webkit-text-stroke-color: #1d3335;
     background:  #77d2dc;
@@ -71,4 +97,34 @@ h3 {
     top: 15%;
     left: 10%;
     font-size: 400%;
+}
+
+.controles {
+    width:65%;
+    opacity: 0.7;
+}
+
+.controlesDiv {
+    position: absolute;
+    right: 7%;
+    top: 30%;
+    width: 25%;
+    height: 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.controlesDiv p {
+    font-size: 3em;
+
+    background:  #edccf3;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    text-shadow: 0px 0px 1px #edccf3, 2px 1px 1px #4a3f4c;
+
+    font-family:  sans-serif;
 }

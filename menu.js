@@ -1,6 +1,7 @@
 const cerebro = new DataManager();
-const conexionBase = 'https://skycrawler.azurewebsites.net/';
+const conexionBase = 'http://rolu.sytes.net:7053/';
 let UI;
+this.TemaPrincipal = new Audio("http://rolu.sytes.net:5567/SKYCRAWLER/sonido/MainTheme.mp3");
 
 var nombre_Jugador = localStorage.getItem("nombre_Jugador");
 if (nombre_Jugador == null) window.location.replace("index.html");
@@ -29,6 +30,7 @@ async function CargarDatos()
 
     usuario = new Jugador(jugador_Data.nombre_jugador, jugador_Data.nivel_actual, jugador_Data.ciudad);
     UI = new UIManager(niveles.length);
+    // TemaPrincipal.play();
     UI.printarMenu();
 }
 
@@ -37,35 +39,38 @@ function CargarNiveles()
     niveles = nivelesCopia;
 }
 
-async function acabarNivel(personaje, victoria) 
+async function acabarNivelAsincrono(personaje, victoria) 
 {
-    personaje.cronometro(false);
     if(victoria)
     {
-        if(personaje.nivelActual >= usuario.NivelMaximo)
+        if(nombre_Jugador != "admin")
         {
-            console.log(usuario.Nombre);
-            console.log(usuario.NivelMaximo);
-            usuario.NivelMaximo++;
-            await cerebro.updateJugador(usuario.Nombre, usuario.NivelMaximo);
-            delete personaje;
+            if(personaje.nivelActual >= usuario.NivelMaximo)
+            {
+                usuario.NivelMaximo++;
+                await cerebro.updateJugador(usuario.Nombre, usuario.NivelMaximo);
+            }
+            await cerebro.insertPuntuacion(usuario.Nombre, personaje.tiempo, personaje.nivelActual, usuario.Ciudad);
         }
-        await cerebro.insertPuntuacion(usuario.Nombre, personaje.tiempo, personaje.nivelActual, usuario.Ciudad);
     }
-    //UI.printarFinalNivel(victoria);
-    console.log("End ------ Victoria: " + victoria);
-    // Manda los datos al ranking si victoria = true
-    //
-    this.CargarNiveles();
-    UI.printarFinalNivel(victoria,personaje.nivelActual);
+    personaje.tiempo = 0;   
+}
 
+function acabarNivel(personaje,victoria)
+{
+    acabarNivelAsincrono(personaje,victoria);
+    personaje.cronometro(false);
+    personaje.coord = [0,0];
+    //UI.printarFinalNivel(victoria);
+    // Manda los datos al ranking si victoria = true
+    // this.CargarNiveles();
+    UI.printarFinalNivel(victoria,personaje.nivelActual);
 }
 
 async function cargarRanking() {
-    let rankingData = await cerebro.getInfo("ranking", "")
-    console.log(rankingData);
+    let rankingData = await cerebro.getInfo("ranking", "");
 
-    window.open("MapaRanking.html");
+    window.location.replace("MapaRanking.html");
     //UI.printarRanking(ranking_Data);
 }
 
@@ -81,7 +86,9 @@ function printarNivel(event) {
     UI.printarNivel(niveles, event, personaje);
 }
 
-function printarNiveles() {
+function printarNiveles() 
+{
+    CargarNiveles();
     UI.printarNiveles(usuario, niveles);
 }
 
